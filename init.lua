@@ -1,5 +1,3 @@
-opt = vim.o
 
-opt.number = true
-
+require("core")
 require("config.lazy")
