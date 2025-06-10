@@ -1,4 +1,3 @@
-
 return {
   'nvim-treesitter/nvim-treesitter',
   run = ':TSUpdate',  -- Automatically update treesitter parsers after installation
