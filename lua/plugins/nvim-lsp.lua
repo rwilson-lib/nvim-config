@@ -2,13 +2,13 @@ return {
   -- https://lsp-zero.netlify.app/docs/guide/integrate-with-mason-nvim.html
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
-        "hrsh7th/cmp-nvim-lsp",
-        { "antosha417/nvim-lsp-file-operations", config = true },
-	{ "folke/neodev.nvim", opts = {} },
-      },
+  dependencies = {
+    "neovim/nvim-lspconfig",
+    "hrsh7th/cmp-nvim-lsp",
+    { "mason-org/mason.nvim",                opts = {} },
+    { "antosha417/nvim-lsp-file-operations", config = true },
+    { "folke/neodev.nvim",                   opts = {} },
+  },
   config = function()
     local lspconfig = require("lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -17,32 +17,43 @@ return {
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
     -- Set diagnostic icons
-    local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-    for type, icon in pairs(signs) do
-      local hl = "DiagnosticSign" .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl })
-    end
-
-    vim.diagnostic.config({ virtual_text = true })
+    vim.diagnostic.config({
+      virtual_text = true, --Enable vitual text
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = " ",
+          [vim.diagnostic.severity.WARN]  = " ",
+          [vim.diagnostic.severity.HINT]  = "󰠠 ",
+          [vim.diagnostic.severity.INFO]  = " ",
+        },
+      },
+    })
 
     -- Global LspAttach autocmd
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
-        local opts = { buffer = ev.buf, silent = true }
         local keymap = vim.keymap.set
+        local opts = function(desc)
+          desc = desc or "" --
+          return { buffer = ev.buf, silent = true, desc = desc }
+        end
 
-        keymap("n", "gD", vim.lsp.buf.declaration, opts)
-        keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
-        keymap("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
-        keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
-        keymap("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
-        keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-        keymap("n", "<leader>rn", vim.lsp.buf.rename, opts)
-        keymap("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
-        keymap("n", "<leader>d", vim.diagnostic.open_float, opts)
-        keymap("n", "K", vim.lsp.buf.hover, opts)
-        keymap("n", "<leader>rs", "<cmd>LspRestart<CR>", opts)
+        keymap("n", "gD", vim.lsp.buf.declaration, opts("lsp declaration"))
+        keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts("Telescope lsp_definitions"))
+        keymap("n", "gR", "<cmd>Telescope lsp_references<CR>", opts("Telescope lsp_references"))
+        keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts("Telescope lsp_implementations"))
+        keymap("n", "K", vim.lsp.buf.hover, opts("Popup Docs"))
+        keymap("n", "g=", vim.lsp.buf.format, opts("lsp format"))
+
+        keymap("n", "<leader>lcd", "<cmd>Telescope diagnostics<CR>", opts("Telescope lsp ws diag"))
+        keymap('n', 'g/S', "<cmd>Telescope lsp_workspace_symbols<CR>", opts("Telescope lsp ws sym"))
+        keymap('n', 'g/s', "<cmd>Telescope lsp_document_symbols<CR>", opts("Telescope lsp sym"))
+
+        keymap("n", '<leader>lch',
+          function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end, opts("[T]oggle Inlay [H]ints"))
       end,
     })
 
@@ -65,7 +76,7 @@ return {
 
       gopls = function()
         lspconfig.gopls.setup({
-	  -- on_attach = on_attach
+          -- on_attach = on_attach
           cmd = { "gopls" },
           capabilities = capabilities,
           filetypes = { "go", "gomod", "gowork", "gotmpl" },
@@ -107,8 +118,21 @@ return {
               runtime = {
                 version = 'LuaJIT'
               },
+              hint = {
+                enable = true, -- ✅ enable inlay hints
+                -- arrayIndex = "Auto",
+                -- await = true,
+                -- paramName = "All", -- Show parameter names
+                -- paramType = true, -- Show parameter types
+                -- semicolon = "Disable",
+                -- setType = true, -- Show variable types
+              },
               diagnostics = {
                 globals = { "vim" }
+              },
+              workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = true,
               },
               completion = { callSnippet = "Replace" },
             },
@@ -117,28 +141,20 @@ return {
       end,
     }
 
-
-
-     require('mason-lspconfig').setup({
-        handlers = {
-          -- this first function is the "default handler"
-          -- it applies to every language server without a "custom handler"
-          function(server_name)
-            require('lspconfig')[server_name].setup({})
-          end,
-          lua_ls = custom_handlers.lua_ls()
-        }
-      })
-
-
-    -- mason_lspconfig.setup_handlers(function(server_name)
-    -- if custom_handlers[server_name] then
-    --    custom_handlers[server_name]()
-    -- else
-    --    lspconfig[server_name].setup({
-     --     capabilities = capabilities,
-     --   })
-     -- end
-   -- end)
+    require('mason-lspconfig').setup({
+      ensure_installed = {
+        'lua_ls', 'gopls',
+        -- add other servers here
+      },
+      automatic_enable = true,
+      handlers = {
+        -- this first function is the "default handler"
+        -- it applies to every language server without a "custom handler"
+        function(server_name)
+          require('lspconfig')[server_name].setup({})
+        end,
+        custom_handlers,
+      }
+    })
   end,
 }
