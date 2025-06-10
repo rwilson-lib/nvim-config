@@ -109,8 +109,8 @@ return {
     map('n', '<leader>hcC', "<cmd>Neogit<cr>", {desc = "Gitsigns Neogit"})
 
     -- Toggles
-    map('n', '<leader>tb', gitsigns.toggle_current_line_blame, {desc = "Gitsigns toggle inline blame"})
-    map('n', '<leader>tw', gitsigns.toggle_word_diff, {desc = "Gitsigns toggle word diff"})
+    map('n', '<leader>htb', gitsigns.toggle_current_line_blame, {desc = "Gitsigns toggle inline blame"})
+    map('n', '<leader>htw', gitsigns.toggle_word_diff, {desc = "Gitsigns toggle word diff"})
 
     -- Text object
     map({'o', 'x'}, 'ih', gitsigns.select_hunk, {desc = "Gitsigns hunk text object"})
