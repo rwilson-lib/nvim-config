@@ -16,24 +16,24 @@ return {
         -- mappings for the buffer
         mappings = {
           -- manually refresh drawer
-          { key = "r",     mode = "n", action = "refresh" },
+          { key = "r", mode = "n", action = "refresh" },
           -- actions perform different stuff depending on the node:
           -- action_1 opens a note or executes a helper
-          { key = "<CR>",  mode = "n", action = "action_1" },
+          { key = "<CR>", mode = "n", action = "action_1" },
           -- action_2 renames a note or sets the connection as active manually
-          { key = "cw",    mode = "n", action = "action_2" },
+          { key = "cw", mode = "n", action = "action_2" },
           -- action_3 deletes a note or connection (removes connection from the file if you configured it like so)
-          { key = "dd",    mode = "n", action = "action_3" },
+          { key = "dd", mode = "n", action = "action_3" },
           -- these are self-explanatory:
           -- { key = "c", mode = "n", action = "collapse" },
           -- { key = "e", mode = "n", action = "expand" },
-          { key = "o",     mode = "n", action = "toggle" },
+          { key = "o", mode = "n", action = "toggle" },
           { key = "<Tab>", mode = "n", action = "toggle" },
           -- mappings for menu popups:
-          { key = "<CR>",  mode = "n", action = "menu_confirm" },
-          { key = "y",     mode = "n", action = "menu_yank" },
+          { key = "<CR>", mode = "n", action = "menu_confirm" },
+          { key = "y", mode = "n", action = "menu_yank" },
           { key = "<Esc>", mode = "n", action = "menu_close" },
-          { key = "q",     mode = "n", action = "menu_close" },
+          { key = "q", mode = "n", action = "menu_close" },
         },
       },
       -- results window config
@@ -42,25 +42,25 @@ return {
         page_size = 100,
 
         -- whether to focus the result window after a query
-        focus_result = true,
+        focus_result = false,
 
         -- mappings for the buffer
         mappings = {
           -- next/previous page
-          { key = "L",     mode = "",  action = "page_next" },
-          { key = "H",     mode = "",  action = "page_prev" },
-          { key = "E",     mode = "",  action = "page_last" },
-          { key = "F",     mode = "",  action = "page_first" },
+          { key = "L", mode = "", action = "page_next" },
+          { key = "H", mode = "", action = "page_prev" },
+          { key = "E", mode = "", action = "page_last" },
+          { key = "F", mode = "", action = "page_first" },
           -- yank rows as csv/json
-          { key = "yaj",   mode = "n", action = "yank_current_json" },
-          { key = "yaj",   mode = "v", action = "yank_selection_json" },
-          { key = "yaJ",   mode = "",  action = "yank_all_json" },
-          { key = "yac",   mode = "n", action = "yank_current_csv" },
-          { key = "yac",   mode = "v", action = "yank_selection_csv" },
-          { key = "yaC",   mode = "",  action = "yank_all_csv" },
+          { key = "yaj", mode = "n", action = "yank_current_json" },
+          { key = "yaj", mode = "v", action = "yank_selection_json" },
+          { key = "yaJ", mode = "", action = "yank_all_json" },
+          { key = "yac", mode = "n", action = "yank_current_csv" },
+          { key = "yac", mode = "v", action = "yank_selection_csv" },
+          { key = "yaC", mode = "", action = "yank_all_csv" },
 
           -- cancel current call execution
-          { key = "<C-c>", mode = "",  action = "cancel_call" },
+          { key = "<C-c>", mode = "", action = "cancel_call" },
         },
       },
       -- editor window config
