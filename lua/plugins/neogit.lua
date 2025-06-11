@@ -1,5 +1,6 @@
 return {
   "NeogitOrg/neogit",
+  cmd = "Neogit", -- lazy-load when :Neogit is run
   dependencies = {
     "nvim-lua/plenary.nvim",
     {
@@ -20,5 +21,17 @@ return {
       optional = true,
     },
   },
-  config = true
+  config = function()
+    require("neogit").setup({
+      commit_popup = {
+        kind = "vsplit",
+      },
+      preview_buffer = {
+        kind = "floating",
+      },
+      integrations = {
+        diffview = true,
+      },
+    })
+  end,
 }
