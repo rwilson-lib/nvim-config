@@ -17,6 +17,8 @@ return {
     vim.keymap.set('n', 'g/b', builtin.buffers, { desc = 'Telescope buffers' })
     vim.keymap.set('n', 'g/?', builtin.help_tags, { desc = 'Telescope help tags' })
     vim.keymap.set('n', 'g/k', builtin.keymaps, { desc = 'Telescope keymaps' })
+    vim.keymap.set('n', 'g/q', builtin.quickfix, { desc = 'Telescope Quickfix' })
+    vim.keymap.set('n', 'g/Q', builtin.quickfixhistory, { desc = 'Telescope Quickfix hist' })
     vim.keymap.set('n', '<leader>ec', function()
       builtin.find_files {
         cmd = vim.fn.stdpath("config")
