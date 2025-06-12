@@ -3,17 +3,17 @@ return {
   event = "InsertEnter",
   dependencies = {
     "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",             -- source for text in buffer
+    "hrsh7th/cmp-path", -- source for text in buffer
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
-    "saadparwaiz1/cmp_luasnip",     -- for autocompletion
+    "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
     {
       "MattiasMTS/cmp-dbee",
       dependencies = {
-        { "kndndrj/nvim-dbee" }
+        { "kndndrj/nvim-dbee" },
       },
       ft = "sql", -- optional but good to have
-      opts = {},  -- needed
+      opts = {}, -- needed
     },
   },
   config = function()
@@ -26,6 +26,10 @@ return {
     cmp.setup({
       completion = {
         completeopt = "menu,menuone,preview,noselect",
+      },
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
       },
       snippet = {
         expand = function(args)
