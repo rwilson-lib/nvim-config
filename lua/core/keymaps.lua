@@ -1,4 +1,4 @@
-vim.g.mapleader = " "         -- set leader to SPC
+vim.g.mapleader = " " -- set leader to SPC
 
 local keymap = vim.keymap.set -- for conciseness
 
@@ -6,7 +6,7 @@ local keymap = vim.keymap.set -- for conciseness
 keymap("n", ";;", function()
   local win = vim.v.count
   if win == 0 then
-    vim.cmd('b#')
+    vim.cmd("b#")
   else
     vim.cmd(string.format("%dwincmd w", win))
   end
@@ -25,9 +25,31 @@ local opts = function(desc)
   return { silent = true, desc = desc }
 end
 
-keymap("n", "<leader>ot", "<cmd>Neotree toggle<CR>", opts("[T]oggle Neotree"))
+keymap("n", "<leader>of", "<cmd>Neotree toggle<CR>", opts("[T]oggle Neotree"))
 keymap("n", "<leader>og", "<cmd>Neogit<CR>", opts("Neogit"))
 keymap("n", "<leader>od", "<cmd>Dbee toggle<CR>", opts("Dbee"))
 
+keymap("n", "<leader>ot", function()
+  local arg = vim.v.count1
+  if arg == 1 then
+    vim.cmd("ToggleTerm")
+  else
+    vim.cmd(string.format("%dToggleTerm", arg))
+  end
+end, { desc = "Toggle terminal" })
+
+keymap("v", "<leader>ot", function()
+  local arg = vim.v.count1
+  if arg == 1 then
+    vim.cmd("ToggleTermSendVisualSelection")
+  else
+    vim.cmd(string.format("ToggleTermSendVisualSelection %d", arg))
+  end
+end, { desc = "Toggle terminal send" })
+
+keymap({ "n", "v" }, "ga.", "<cmd>CodeCompanion<CR>", opts("CodeCompanion Chat"))
+keymap({ "n", "v" }, "gaC", "<cmd>CodeCompanionChat<CR>", opts("CodeCompanion Chat"))
+keymap({ "n", "v" }, "ga/", "<cmd>CodeCompanionActions<CR>", opts("CodeCompanion Action"))
+keymap({ "n", "v" }, "ga:", "<cmd>CodeCompanionCmd<CR>", opts("CodeCompanion Command"))
 
 keymap("n", "_", "<cmd>Oil<CR>", opts("Toggle Oil"))
