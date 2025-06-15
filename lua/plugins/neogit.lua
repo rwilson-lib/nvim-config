@@ -10,7 +10,7 @@ return {
         require("diffview").setup({
           view = {
             default = {
-              layout = "diff2_horizontal",
+              layout = "diff2_vertical",
             },
           },
         })
@@ -23,6 +23,7 @@ return {
   },
   config = function()
     require("neogit").setup({
+      kind = "tab",
       commit_popup = {
         kind = "vsplit",
       },
