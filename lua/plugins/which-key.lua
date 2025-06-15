@@ -8,6 +8,7 @@ return {
     spec = {
       { ";g", group = "Gitsigns" },
       { "g/", group = "Telescope" },
+      { "ga", group = "AI" },
     },
   },
   keys = {
