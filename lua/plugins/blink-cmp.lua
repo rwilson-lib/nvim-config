@@ -168,7 +168,7 @@ return {
           show_with_menu = false,
         },
         menu = {
-          auto_show = false,
+          auto_show = true,
           border = "rounded",
           draw = {
             -- We don't need label_description now because label and label_description are already
