@@ -2,7 +2,13 @@
 return {
   -- https://www.youtube.com/watch?v=yx611gDdysc
   "mfussenegger/nvim-dap",
-  -- vim.keymap.set({ "n", "i" }, "<F8>", "<cmd>DapToggleBreakpoint<cr>", { desc = "DAP: Toggle Breakpoint" })
+  event = "VeryLazy",
+  dependencies = {
+    { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" } },
+    "theHamsta/nvim-dap-virtual-text",
+    { "leoluz/nvim-dap-go", lazy = true, ft = { "go" } },
+    { "mfussenegger/nvim-dap-python", lazy = true, ft = { "python" } },
+  },
 
   keys = {
     {
@@ -48,15 +54,16 @@ return {
       desc = "DAP: Run Last Debug Session",
     },
   },
-  dependencies = {
-    { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" } },
-    "theHamsta/nvim-dap-virtual-text",
-    { "leoluz/nvim-dap-go", lazy = true, ft = { "go" } },
-  },
+
+  init = function()
+    require("utils.dap-gcc")
+  end,
+
   config = function()
     local dap = require("dap")
     local dapui = require("dapui")
     require("dap-go").setup()
+    require("dap-python").setup("uv")
 
     ---@diagnostic disable-next-line: missing-parameter
     require("nvim-dap-virtual-text").setup()
