@@ -2,7 +2,6 @@ return {
   "heilgar/nvim-http-client",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "hrsh7th/nvim-cmp", -- Optional but recommended for enhanced autocompletion
     "nvim-telescope/telescope.nvim", -- Optional for better environment selection
   },
   event = "VeryLazy",
