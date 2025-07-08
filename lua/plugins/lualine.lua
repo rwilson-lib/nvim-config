@@ -27,7 +27,13 @@ return {
         lualine_b = { "branch" },
         lualine_c = { "filename" },
         lualine_x = { "encoding", "fileformat", "filetype", { require("mcphub.extensions.lualine") } },
-        lualine_y = { "progrmss" },
+        lualine_y = {
+          "progrmss",
+          {
+            "diagnosti",
+            sources = { "nvim_workspace_diagnostic" },
+          },
+        },
         lualine_z = { "location" },
       },
       inactive_sections = {
