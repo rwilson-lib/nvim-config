@@ -66,3 +66,7 @@ vim.opt.swapfile = true -- Ensure swap files are enabled (default, but good to b
 
 -- folds
 vim.o.foldcolumn = "1"
+
+-- enable shada file
+vim.o.shada = "!,'100,<50,s10,h"
+-- vim.opt.shadafile = vim.fn.stdpath("data") .. "/shada/main.shada"
