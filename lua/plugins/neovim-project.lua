@@ -15,6 +15,11 @@ return {
       desc = "Find Projects",
     },
     {
+      ";p",
+      "<cmd>NeovimProjectLoadRecent<CR>",
+      desc = "Recent Project",
+    },
+    {
       "<Leader>pr",
       "<cmd>NeovimProjectLoadRecent<CR>",
       desc = "Recent Project",
