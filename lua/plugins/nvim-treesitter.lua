@@ -1,13 +1,13 @@
 return {
-  'nvim-treesitter/nvim-treesitter',
+  "nvim-treesitter/nvim-treesitter",
   dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
+    "nvim-treesitter/nvim-treesitter-textobjects",
     event = { "BufReadPost", "BufNewFile" },
   },
-  run = ':TSUpdate', -- Automatically update treesitter parsers after installation
+  run = ":TSUpdate", -- Automatically update treesitter parsers after installation
   event = { "BufReadPost", "BufNewFile" },
   config = function()
-    require("nvim-treesitter.configs").setup {
+    require("nvim-ts-autotag").setup({
       ensure_installed = { "lua", "javascript", "go" }, -- Add any additional languages you need
       ignore_install = { "phpdoc" },
       additional_vim_regex_highlighting = { "sql" },
@@ -45,9 +45,9 @@ return {
             ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
           },
           selection_modes = {
-            ['@parameter.outer'] = 'v', -- charwise
-            ['@function.outer'] = 'V',  -- linewise
-            ['@class.outer'] = '<c-v>', -- blockwise
+            ["@parameter.outer"] = "v", -- charwise
+            ["@function.outer"] = "V", -- linewise
+            ["@class.outer"] = "<c-v>", -- blockwise
           },
           include_surrounding_whitespace = true,
         },
@@ -72,10 +72,10 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = '<C-space>',   -- Start incremental selection
-          node_incremental = '<C-space>', -- Expand selection
-          node_decremental = '<bs>',      -- Shrink selection
-          scope_incremental = '<tab>',    -- Expand scope
+          init_selection = "<C-space>", -- Start incremental selection
+          node_incremental = "<C-space>", -- Expand selection
+          node_decremental = "<bs>", -- Shrink selection
+          scope_incremental = "<tab>", -- Expand scope
         },
       },
 
@@ -93,6 +93,6 @@ return {
       },
       -- Add other modules as needed, e.g., playground, refactor, folding
       --
-    }
-  end
+    })
+  end,
 }
