@@ -32,7 +32,7 @@ return {
         "gopls",
       },
       automatic_installation = true,
-      automatic_enable = true,
+      automatic_enable = false,
     })
     --
     -- 1. mason-null-ls.nvim setup to auto-install pgformatter
