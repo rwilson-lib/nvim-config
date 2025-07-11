@@ -11,7 +11,7 @@ return {
       options = {
         ignore_focus = {
           "undotree",
-          "neo-tree",
+          "Avante",
           "dbee",
           "dapui_scopes",
           "dapui_stacks",
