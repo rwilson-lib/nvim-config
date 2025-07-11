@@ -25,7 +25,9 @@ local opts = function(desc)
   return { silent = true, desc = desc }
 end
 
-keymap("n", "<leader>of", "<cmd>Neotree toggle<CR>", opts("[T]oggle Neotree"))
+keymap("n", "<leader>oe", function()
+  Snacks.explorer()
+end, opts("[T]oggle File Explorer"))
 keymap("n", "<leader>og", "<cmd>Neogit<CR>", opts("Neogit"))
 keymap("n", "<leader>od", "<cmd>Dbee toggle<CR>", opts("Dbee"))
 

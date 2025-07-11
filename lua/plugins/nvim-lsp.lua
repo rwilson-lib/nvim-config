@@ -115,6 +115,7 @@ return {
 
     config = function(_, opts)
       local lspconfig = require("lspconfig")
+      Snacks = Snacks or {}
       -- local util = require("lspconfig.util")
       -- local navic = require("nvim-navic")
       --
@@ -154,24 +155,43 @@ return {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
           local keymap = vim.keymap.set
-          local options = function(desc)
+          ---@param desc string|nil
+          ---@param nowait boolean|nil
+          ---@return table
+          local options = function(desc, nowait)
             desc = desc or "" --
-            return { buffer = ev.buf, silent = true, desc = desc }
+            nowait = nowait or false --
+            return { buffer = ev.buf, silent = true, nowait = nowait, desc = desc }
           end
 
-          keymap("n", "gD", vim.lsp.buf.declaration, options("lsp declaration"))
-          keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", options("Telescope lsp_definitions"))
-          keymap("n", "gR", "<cmd>Telescope lsp_references<CR>", options("Telescope lsp_references"))
-          keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", options("Telescope lsp_implementations"))
+          keymap("n", "gD", function()
+            Snacks.picker.lsp_declarations()
+          end, options("Goto Declaration"))
+          keymap("n", "gd", function()
+            Snacks.picker.lsp_definitions()
+          end, options("Goto Definition"))
+          keymap("n", "gR", function()
+            Snacks.picker.lsp_references()
+          end, options("References", true))
+          keymap("n", "gI", function()
+            Snacks.picker.lsp_implementations()
+          end, options("Goto Implementation"))
+          keymap("n", "gy", function()
+            Snacks.picker.lsp_type_definitions()
+          end, options("Goto t[y]pe Definition"))
           keymap("n", "K", vim.lsp.buf.hover, options("Popup Docs"))
           keymap("n", "g=", vim.lsp.buf.format, options("lsp format"))
 
           keymap("n", "<leader>lcd", "<cmd>Telescope diagnostics<CR>", options("Telescope lsp ws diag"))
-          keymap("n", "g/S", "<cmd>Telescope lsp_workspace_symbols<CR>", options("Telescope lsp ws sym"))
-          keymap("n", "g/s", "<cmd>Telescope lsp_document_symbols<CR>", options("Telescope lsp sym"))
+          keymap("n", "<leader>ss", function()
+            Snacks.picker.lsp_symbols()
+          end, options("LSP Symbols"))
+          keymap("n", "<leader>sS", function()
+            Snacks.picker.lsp_workspace_symbols()
+          end, options("LSP Workspace Symbols"))
 
           keymap("n", "<leader>lch", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+            Snacks.toggle.inlay_hints()
           end, options("[T]oggle Inlay [H]ints"))
         end,
       })
