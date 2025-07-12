@@ -7,8 +7,11 @@ return {
     -- refer to the configuration section below
     spec = {
       { ";g", group = "Gitsigns" },
-      { "g/", group = "Telescope" },
-      { "ga", group = "AI" },
+      { "<leader>a", group = "ai" },
+      { "<leader>f", group = "Find" },
+      { "<leader>s", group = "Search" },
+      { "<leader>u", group = "Toggle" },
+      { "<leader>g", group = "Git" },
     },
   },
   keys = {
