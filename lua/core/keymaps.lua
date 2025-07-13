@@ -66,12 +66,12 @@ end
 
 keymap("n", "gFt", function()
   open_file_at_line("tabedit")
-end, { desc = "Open file in new tab (supports :line)" })
+end, { desc = "Tab" })
 
 keymap("n", "gFs", function()
   open_file_at_line("topleft split")
-end, { desc = "Open file in horizontal split (supports :line)" })
+end, { desc = "Split" })
 
 keymap("n", "gFv", function()
   open_file_at_line("vsplit")
-end, { desc = "Open file in vertical split (supports :line)" })
+end, { desc = "Vsplit" })
