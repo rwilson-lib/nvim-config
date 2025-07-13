@@ -65,8 +65,13 @@ vim.opt.directory = swapdir .. "//"
 vim.opt.swapfile = true -- Ensure swap files are enabled (default, but good to be explicit)
 
 -- folds
-vim.o.foldcolumn = "1"
+vim.o.foldcolumn = "1" -- set foldcolumn to 1
 
 -- enable shada file
 vim.o.shada = "!,'100,<50,s10,h"
 -- vim.opt.shadafile = vim.fn.stdpath("data") .. "/shada/main.shada"
+--
+vim.opt.laststatus = 3 -- Always show the status line
+
+-- tabline
+vim.opt.showtabline = 2

@@ -13,7 +13,24 @@ return {
       enabled = true,
       timeout = 3000,
     },
-    picker = { enabled = true },
+    picker = {
+      enabled = true,
+      layout = {
+        preset = "telescope",
+        circle = true,
+      },
+      win = {
+        input = {
+          keys = {
+            -- ["<Esc>"] = { "close", mode = { "n", "i" } },
+            ["J"] = { "preview_scroll_down", mode = { "n", "i" } },
+            ["K"] = { "preview_scroll_up", mode = { "n", "i" } },
+            ["H"] = { "preview_scroll_left", mode = { "n", "i" } },
+            ["L"] = { "preview_scroll_right", mode = { "n", "i" } },
+          },
+        },
+      },
+    },
     quickfile = { enabled = true },
     scope = { enabled = true },
     scroll = { enabled = true },
@@ -102,13 +119,7 @@ return {
       end,
       desc = "Find Git Files",
     },
-    {
-      "<leader>fp",
-      function()
-        Snacks.picker.projects()
-      end,
-      desc = "Projects",
-    },
+    -- { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects", },
     {
       "<leader>fr",
       function()

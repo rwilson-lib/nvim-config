@@ -4,33 +4,16 @@ return {
     "NeovimProjectLoadSession",
   },
   keys = {
-    {
-      "g/p",
-      "<cmd>NeovimProjectDiscover history<CR>",
-      desc = "Find Projects",
-    },
-    {
-      "<leader>pf",
-      "<cmd>NeovimProjectDiscover history<CR>",
-      desc = "Find Projects",
-    },
-    {
-      ";p",
-      "<cmd>NeovimProjectLoadRecent<CR>",
-      desc = "Recent Project",
-    },
-    {
-      "<Leader>pr",
-      "<cmd>NeovimProjectLoadRecent<CR>",
-      desc = "Recent Project",
-    },
+    { "<leader>fp", "<cmd>NeovimProjectDiscover history<CR>", desc = "Find Projects" },
+    { ";p", "<cmd>NeovimProjectLoadRecent<CR>", desc = "Recent Project" },
+    { "<Leader>pr", "<cmd>NeovimProjectLoadRecent<CR>", desc = "Recent Project" },
   },
   priority = 100,
   dependencies = {
     { "nvim-lua/plenary.nvim" },
     -- optional picker
-    { "nvim-telescope/telescope.nvim" },
-    { "Shatur/neovim-session-manager" },
+    -- { "nvim-telescope/telescope.nvim" },
+    { "Shatur/neovim-session-manager", event = "VeryLazy" },
   },
   opts = {
     projects = { -- define project roots
@@ -45,7 +28,7 @@ return {
       },
     },
     picker = {
-      type = "telescope", -- or "fzf-lua"
+      type = "snacks", -- or "telescope"
       preview = {
         enabled = true, -- show directory structure in Telescope preview
         git_status = true, -- show branch name, an ahead/behind counter, and the git status of each file/folder

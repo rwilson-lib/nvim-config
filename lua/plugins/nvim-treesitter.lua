@@ -1,20 +1,22 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    event = { "BufReadPost", "BufNewFile" },
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      event = { "BufReadPost", "BufNewFile" },
+    },
   },
   run = ":TSUpdate", -- Automatically update treesitter parsers after installation
   event = { "BufReadPost", "BufNewFile" },
   config = function()
     require("nvim-ts-autotag").setup({
-      ensure_installed = { "lua", "javascript", "go" }, -- Add any additional languages you need
+      ensure_installed = { "lua", "javascript", "go", "markdown", "markdown_inline" }, -- Add any additional languages you need
       ignore_install = { "phpdoc" },
-      additional_vim_regex_highlighting = { "sql" },
       sync_install = false,
       auto_install = true,
       highlight = {
         enable = true, -- Enable highlighting based on Treesitter
+        additional_vim_regex_highlighting = { "sql" },
       },
       indent = {
         enable = true, -- Enable indentation based on Treesitter

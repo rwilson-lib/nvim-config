@@ -48,10 +48,30 @@ keymap("v", "<leader>ot", function()
     vim.cmd(string.format("ToggleTermSendVisualSelection %d", arg))
   end
 end, { desc = "Toggle terminal send" })
-
-keymap({ "n", "v" }, "ga.", "<cmd>CodeCompanion<CR>", opts("CodeCompanion Chat"))
-keymap({ "n", "v" }, "gaC", "<cmd>CodeCompanionChat<CR>", opts("CodeCompanion Chat"))
-keymap({ "n", "v" }, "ga/", "<cmd>CodeCompanionActions<CR>", opts("CodeCompanion Action"))
-keymap({ "n", "v" }, "ga:", "<cmd>CodeCompanionCmd<CR>", opts("CodeCompanion Command"))
-
 keymap("n", "_", "<cmd>Oil<CR>", opts("Toggle Oil"))
+
+local function open_file_at_line(open_cmd)
+  local target = vim.fn.expand("<cWORD>")
+  local filename, lnum = string.match(target, "([^:%s]+):?(%d*)")
+
+  if filename then
+    vim.cmd(open_cmd .. " " .. filename)
+    if lnum ~= "" then
+      vim.cmd(tostring(lnum))
+    end
+  else
+    vim.notify("Invalid file format: " .. target, vim.log.levels.WARN)
+  end
+end
+
+keymap("n", "gFt", function()
+  open_file_at_line("tabedit")
+end, { desc = "Open file in new tab (supports :line)" })
+
+keymap("n", "gFs", function()
+  open_file_at_line("topleft split")
+end, { desc = "Open file in horizontal split (supports :line)" })
+
+keymap("n", "gFv", function()
+  open_file_at_line("vsplit")
+end, { desc = "Open file in vertical split (supports :line)" })

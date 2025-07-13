@@ -20,7 +20,7 @@ return {
           -- add more sources if needed
         },
         on_attach = function(client, bufnr)
-          if client.supports_method("textDocument/formatting") then
+          if client:supports_method("textDocument/formatting") then
             -- Create (or get) the augroup once
             local group = vim.api.nvim_create_augroup("LspFormatting", { clear = false })
 
