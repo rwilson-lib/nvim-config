@@ -113,8 +113,9 @@ return {
     event = "InsertEnter",
     -- optional: provides snippets for the snippet source
     dependencies = {
-      "disrupted/blink-cmp-conventional-commits",
-      "rafamadriz/friendly-snippets",
+      { "Kaiser-Yang/blink-cmp-avante", lazy = true },
+      { "disrupted/blink-cmp-conventional-commits", lazy = true },
+      { "rafamadriz/friendly-snippets" },
       { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
       -- nvim-cmp sources
       -- requires saghen/blink.compat
@@ -199,16 +200,23 @@ return {
         per_filetype = {
           sql = { "snippets", "dadbod", "buffer" },
           gitcomit = { "buffer", "conventional_commits" },
+          AvanteInput = { "avante", "path", "buffer" },
         },
         providers = {
+          avante = {
+            module = "blink-cmp-avante",
+            name = "Avante",
+            opts = { -- options for blink-cmp-avante },
+          },
           dictionary = {
             module = "blink-cmp-dictionary",
             name = "Dict",
-            -- Make sure this is at least 2.
-            -- 3 is recommended
+            max_items = 8,
             min_keyword_length = 3,
             opts = {
-              -- options for blink-cmp-dictionary
+              dictionary_directories = {
+                vim.fn.expand("~/.local/share/dict"),
+              },
             },
           },
           dadbod = {
