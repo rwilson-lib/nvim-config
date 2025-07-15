@@ -1,7 +1,5 @@
 require("config.lazy")
 require("core")
--- Prepend mise shims to PATH
-vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()

@@ -74,4 +74,7 @@ vim.o.shada = "!,'100,<50,s10,h"
 vim.opt.laststatus = 3 -- Always show the status line
 
 -- tabline
-vim.opt.showtabline = 2
+vim.opt.showtabline = 1
+
+-- Prepend mise shims to PATH
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
