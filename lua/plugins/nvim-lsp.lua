@@ -1,15 +1,13 @@
 return {
   {
-    -- Then type <c-y>, (Ctrly,), and you should see:
+    -- Then type <c-y>, (Ctrl-y,), and you should see:
     "mattn/emmet-vim",
     ft = { "html", "css", "javascriptreact", "typescriptreact" },
     init = function()
       vim.g.user_emmet_leader_key = "<C-y>" -- or any key you like
       vim.g.user_emmet_mode = "inv" -- or any key you like
       vim.g.user_emmet_install_global = 0
-      vim.cmd([[
-      autocmd FileType html,css,javascriptreact,typescriptreact EmmetInstall
-    ]])
+      vim.cmd([[ autocmd FileType html,css,javascriptreact,typescriptreact EmmetInstall ]])
     end,
   },
   {
@@ -21,13 +19,20 @@ return {
       { "mason-org/mason.nvim", opts = {} },
       { "antosha417/nvim-lsp-file-operations", config = true },
       { "folke/neodev.nvim", opts = {} },
+      { "SmiteshP/nvim-navbuddy", opts = { lsp = { auto_attach = true } } },
+      { "MunifTanjim/nui.nvim" },
       {
-        "SmiteshP/nvim-navbuddy",
-        dependencies = {
-          "SmiteshP/nvim-navic",
-          "MunifTanjim/nui.nvim",
-        },
-        opts = { lsp = { auto_attach = true } },
+        "SmiteshP/nvim-navic",
+        config = function()
+          vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+          require("nvim-navic").setup({
+            lsp = {
+              auto_attach = true,
+              preference = nil,
+            },
+            click = true,
+          })
+        end,
       },
     },
     opts = {
@@ -116,19 +121,6 @@ return {
     config = function(_, opts)
       local lspconfig = require("lspconfig")
       Snacks = Snacks or {}
-      -- local util = require("lspconfig.util")
-      -- local navic = require("nvim-navic")
-      --
-
-      -- config = function()
-      --   local on_attach = function(client, bufnr)
-      --     if client.server_capabilities.documentSymbolProvider then
-      --       navic.attach(client, bufnr)
-      --     end
-      --   end
-
-      -- end,
-
       for server, config in pairs(opts.servers) do
         config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
         lspconfig[server].setup(config)
@@ -136,10 +128,10 @@ return {
         vim.lsp.enable(server)
       end
 
-      -- Set diagnostic icons
       vim.diagnostic.config({
         virtual_text = true, --Enable vitual text
         underline = true,
+        -- Set diagnostic icons
         signs = {
           text = {
             [vim.diagnostic.severity.ERROR] = " ",
@@ -163,6 +155,12 @@ return {
             nowait = nowait or false --
             return { buffer = ev.buf, silent = true, nowait = nowait, desc = desc }
           end
+
+          -- local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          -- local navic = require("nvim-navic")
+          -- if client.server_capabilities.documentSymbolProvider then
+          --   navic.attach(client, ev.buf)
+          -- end
 
           keymap("n", "gD", function()
             Snacks.picker.lsp_declarations()
