@@ -1,3 +1,5 @@
+-- Decrypt API key and set it as an environment variable
+local gemini_api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/gemini_api_key.gpg' | tr -d '\n'")
 return {
   {
     "ravitemer/mcphub.nvim",
@@ -67,9 +69,7 @@ return {
     event = "VeryLazy",
     version = false, -- Never set this value to "*"! Never!
     config = function()
-      -- Decrypt API key and set it as an environment variable
-      local api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/gemini_api_key.gpg' | tr -d '\n'")
-      vim.fn.setenv("AVANTE_GEMINI_API_KEY", api_key)
+      vim.fn.setenv("AVANTE_GEMINI_API_KEY", gemini_api_key)
       require("avante").setup({
         -- system_prompt as function ensures LLM always has latest MCP server state
         -- This is evaluated for every message, even in existing chats
@@ -199,7 +199,7 @@ return {
           gemini = function()
             return require("codecompanion.adapters").extend("gemini", {
               env = {
-                api_key = "cmd: gpg --batch --quiet --decrypt ~/gemini_api_key.gpg",
+                api_key = gemini_api_key,
               },
             })
           end,
