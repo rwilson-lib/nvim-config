@@ -1,6 +1,5 @@
 return {
   "andythigpen/nvim-coverage",
-  version = "*",
   config = function()
     require("coverage").setup({
       auto_reload = true,
@@ -16,7 +15,6 @@ return {
         covered = { hl = "CoverageCovered", text = "▎" },
         uncovered = { hl = "CoverageUncovered", text = "▎" },
       },
-
 
       summary = {
         -- customize the summary pop-up

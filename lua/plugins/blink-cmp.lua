@@ -98,7 +98,7 @@ return {
   },
   {
     "saghen/blink.compat",
-    version = "*",
+    event = "InsertEnter",
     lazy = true,
     opts = {
       impersonate_nvim_cmp = false,

@@ -67,7 +67,6 @@ return {
       end
     end,
     event = "VeryLazy",
-    version = false, -- Never set this value to "*"! Never!
     config = function()
       vim.fn.setenv("AVANTE_GEMINI_API_KEY", gemini_api_key)
       require("avante").setup({
@@ -164,7 +163,7 @@ return {
       require("codecompanion").setup({
         opts = {
           -- Set debug logging
-          log_level = "DEBUG",
+          -- log_level = "DEBUG",
         },
         strategies = {
           chat = {
