@@ -15,7 +15,7 @@ opt.backspace = "indent,eol,start"
 opt.termguicolors = true
 opt.background = "dark"
 -- Set colorscheme
-cmd.colorscheme("catppuccin")
+cmd.colorscheme("catppuccin-mocha")
 
 opt.signcolumn = "yes"
 opt.number = true
