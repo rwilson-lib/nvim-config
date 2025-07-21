@@ -1,10 +1,14 @@
 return {
   {
+    "numToStr/Comment.nvim",
+    opts = {},
+  },
+  {
     -- Then type <c-y>, (Ctrl-y,), and you should see:
     "mattn/emmet-vim",
     ft = { "html", "css", "javascriptreact", "typescriptreact" },
     init = function()
-      vim.g.user_emmet_leader_key = "<C-y>" -- or any key you like
+      vim.g.user_emmet_leader_key = "<C-;>" -- or any key you like
       vim.g.user_emmet_mode = "inv" -- or any key you like
       vim.g.user_emmet_install_global = 0
       vim.cmd([[ autocmd FileType html,css,javascriptreact,typescriptreact EmmetInstall ]])
@@ -15,7 +19,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
+      -- "hrsh7th/cmp-nvim-lsp",
       { "mason-org/mason.nvim", opts = {} },
       { "antosha417/nvim-lsp-file-operations", config = true },
       { "folke/neodev.nvim", opts = {} },
