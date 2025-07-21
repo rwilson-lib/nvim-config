@@ -12,3 +12,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
   desc = "Highlight yanked text (all types)",
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "gitcommit",
+  callback = function()
+    vim.opt_local.textwidth = 79
+    vim.opt_local.formatoptions:append("t")
+  end,
+})

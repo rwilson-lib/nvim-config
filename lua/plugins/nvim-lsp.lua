@@ -1,10 +1,14 @@
 return {
   {
+    "numToStr/Comment.nvim",
+    opts = {},
+  },
+  {
     -- Then type <c-y>, (Ctrl-y,), and you should see:
     "mattn/emmet-vim",
     ft = { "html", "css", "javascriptreact", "typescriptreact" },
     init = function()
-      vim.g.user_emmet_leader_key = "<C-y>" -- or any key you like
+      vim.g.user_emmet_leader_key = "<C-;>" -- or any key you like
       vim.g.user_emmet_mode = "inv" -- or any key you like
       vim.g.user_emmet_install_global = 0
       vim.cmd([[ autocmd FileType html,css,javascriptreact,typescriptreact EmmetInstall ]])
@@ -15,7 +19,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
+      -- "hrsh7th/cmp-nvim-lsp",
       { "mason-org/mason.nvim", opts = {} },
       { "antosha417/nvim-lsp-file-operations", config = true },
       { "folke/neodev.nvim", opts = {} },
@@ -24,12 +28,8 @@ return {
       {
         "SmiteshP/nvim-navic",
         config = function()
-          vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
           require("nvim-navic").setup({
-            lsp = {
-              auto_attach = true,
-              preference = nil,
-            },
+            lsp = { auto_attach = true, preference = nil },
             click = true,
           })
         end,
@@ -156,11 +156,11 @@ return {
             return { buffer = ev.buf, silent = true, nowait = nowait, desc = desc }
           end
 
-          -- local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          -- local navic = require("nvim-navic")
-          -- if client.server_capabilities.documentSymbolProvider then
-          --   navic.attach(client, ev.buf)
-          -- end
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if client.server_capabilities.documentSymbolProvider then
+            -- set winbar to nvim-navic in the local buf
+            vim.api.nvim_buf_set_option(0, "winbar", "%{%v:lua.require'nvim-navic'.get_location()%}")
+          end
 
           keymap("n", "gD", function()
             Snacks.picker.lsp_declarations()

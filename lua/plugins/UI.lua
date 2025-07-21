@@ -1,7 +1,4 @@
 return {
-  {
-    "tpope/vim-dispatch",
-  },
   -- {
   --   "folke/noice.nvim",
   --   event = "VeryLazy",

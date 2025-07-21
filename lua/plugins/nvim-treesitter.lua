@@ -9,7 +9,7 @@ return {
   run = ":TSUpdate", -- Automatically update treesitter parsers after installation
   event = { "BufReadPost", "BufNewFile" },
   config = function()
-    require("nvim-ts-autotag").setup({
+    require("nvim-treesitter.configs").setup({
       ensure_installed = { "lua", "javascript", "go", "markdown", "markdown_inline" }, -- Add any additional languages you need
       ignore_install = { "phpdoc" },
       sync_install = false,
