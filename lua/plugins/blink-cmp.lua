@@ -1,6 +1,7 @@
 return {
   {
     "xzbdmw/colorful-menu.nvim",
+    event = "InsertEnter",
     config = function()
       -- You don't need to set these options.
       require("colorful-menu").setup({
@@ -113,14 +114,20 @@ return {
     event = "InsertEnter",
     -- optional: provides snippets for the snippet source
     dependencies = {
-      { "Kaiser-Yang/blink-cmp-avante", lazy = true },
-      { "disrupted/blink-cmp-conventional-commits", lazy = true },
+      -- { "Kaiser-Yang/blink-cmp-avante", lazy = true },
+      { "disrupted/blink-cmp-conventional-commits", ft = "gitcommit", lazy = true },
       { "rafamadriz/friendly-snippets" },
+      {
+        "L3MON4D3/LuaSnip",
+        -- follow latest release.
+        -- install jsregexp (optional!).
+        build = "make install_jsregexp",
+      },
       { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
       -- nvim-cmp sources
       -- requires saghen/blink.compat
       -- https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
-      "MattiasMTS/cmp-dbee",
+      { "MattiasMTS/cmp-dbee", opts = {} },
       {
         "Kaiser-Yang/blink-cmp-dictionary",
         lazy = true,
@@ -189,25 +196,22 @@ return {
         },
       },
       -- C-k: Toggle signature help (if signature.enabled = true)
-      signature = {
-        enabled = true,
-      },
-
+      signature = { enabled = true },
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { "lsp", "path", "snippets", "buffer", "dictionary" },
         per_filetype = {
-          sql = { "snippets", "dadbod", "buffer" },
+          sql = { "dadbod", "cmp_dbee", "buffer", "snippets" },
           gitcomit = { "buffer", "conventional_commits" },
-          AvanteInput = { "avante", "path", "buffer" },
+          -- AvanteInput = { "avante", "path", "buffer" },
         },
         providers = {
-          avante = {
-            module = "blink-cmp-avante",
-            name = "Avante",
-            opts = { -- options for blink-cmp-avante },
-          },
+          -- avante = {
+          --   module = "blink-cmp-avante",
+          --   name = "Avante",
+          --   opts = {},
+          -- },
           dictionary = {
             module = "blink-cmp-dictionary",
             name = "Dict",
@@ -218,6 +222,11 @@ return {
                 vim.fn.expand("~/.local/share/dict"),
               },
             },
+            should_show_items = function()
+              local col = vim.api.nvim_win_get_cursor(0)[2]
+              local before_cursor = vim.api.nvim_get_current_line():sub(1, col)
+              return before_cursor:match("&" .. "%w*$")
+            end,
           },
           dadbod = {
             name = "Dadbod",
@@ -234,17 +243,11 @@ return {
             ---@type blink-cmp-conventional-commits.Options
             opts = {}, -- none so far
           },
-          -- cmp_dbee = {
-          --   name = "cmp-dbee",
-          --   module = "blink.compat.source",
-          --   score_offset = 0,
-          --   -- enabled = function()
-          --   --   return vim.bo.filetype == "sql"
-          --   -- end,
-          --   opts = {
-          --     debug = true,
-          --   },
-          -- },
+          cmp_dbee = {
+            name = "cmp-dbee",
+            module = "blink.compat.source",
+            opts = {}, -- needed
+          },
         },
       },
 
