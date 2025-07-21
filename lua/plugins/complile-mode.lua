@@ -1,6 +1,6 @@
 return {
   "ej-shafran/compile-mode.nvim",
-  event = "VeryLazy", -- Load only when needed
+  cmd = { "Compile" },
   -- you can just use the latest version:
   -- branch = "latest",
   -- or the most up-to-date updates:
