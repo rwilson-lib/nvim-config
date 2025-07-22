@@ -57,8 +57,14 @@ local function GoFindOrCreateTest(mode)
 end
 
 -- Default (no split)
-vim.keymap.set("n", "<leader>tt", function() GoFindOrCreateTest("none") end, { desc = "Toggle Go <-> test file" })
+vim.keymap.set("n", "<leader>tt", function()
+  GoFindOrCreateTest("none")
+end, { desc = "Toggle Go <-> test file" })
 -- Vertical split
-vim.keymap.set("n", "<leader>tv", function() GoFindOrCreateTest("vsplit") end, { desc = "Toggle Go <-> test (vsplit)" })
+vim.keymap.set("n", "<leader>tv", function()
+  GoFindOrCreateTest("vsplit")
+end, { desc = "Toggle Go <-> test (vsplit)" })
 -- Horizontal split
-vim.keymap.set("n", "<leader>th", function() GoFindOrCreateTest("split") end, { desc = "Toggle Go <-> test (split)" })
+vim.keymap.set("n", "<leader>th", function()
+  GoFindOrCreateTest("split")
+end, { desc = "Toggle Go <-> test (split)" })
