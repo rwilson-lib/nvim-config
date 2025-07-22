@@ -18,5 +18,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.opt_local.textwidth = 79
     vim.opt_local.formatoptions:append("t")
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
   end,
 })
