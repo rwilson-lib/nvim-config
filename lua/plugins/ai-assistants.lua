@@ -1,5 +1,6 @@
 -- Decrypt API key and set it as an environment variable
-local gemini_api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/gemini_api_key.gpg' | tr -d '\n'")
+local gemini_api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/gemini_api_key.gpg'")
+gemini_api_key = gemini_api_key:gsub("^%s*(.-)%s*$", "%1") -- Trim leading/trailing whitespace
 return {
   {
     "ravitemer/mcphub.nvim",
@@ -25,11 +26,11 @@ return {
     -- https://www.youtube.com/watch?v=AUgbOckKxzw
     -- https://codecompanion.olimorris.dev
     "olimorris/codecompanion.nvim",
-    cmd = {
-      "CodeCompanion",
-      "CodeCompanionActions",
-      "CodeCompanionChat",
-      "CodeCompanionCmd",
+    keys = {
+      { "<leader>aa", "<cmd>CodeCompanion<CR>", mode = { "n", "v" }, desc = "CodeCompanion" },
+      { "<leader>ac", "<cmd>CodeCompanionChat<CR>", mode = { "n", "v" }, desc = "Companion Chat" },
+      { "<leader>ax", "<cmd>CodeCompanionCmd<CR>", mode = { "n", "v" }, desc = "Companion Cmd" },
+      { "<leader>as", "<cmd>CodeCompanionActions<CR>", mode = { "n", "v" }, desc = "Companion Actions" },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -42,7 +43,6 @@ return {
       "folke/fidget.nvim",
       "ravitemer/codecompanion-history.nvim",
     },
-
     init = function()
       require("utils.fidget-spinner"):init()
     end,

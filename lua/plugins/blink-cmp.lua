@@ -160,6 +160,7 @@ return {
       keymap = {
         preset = "default",
         ["<Tab>"] = { "accept", "fallback" },
+        ["<Return>"] = { "accept", "fallback" },
       },
 
       appearance = {
@@ -170,6 +171,7 @@ return {
 
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
+        list = { selection = { preselect = false, auto_insert = true } },
         documentation = { auto_show = true },
         ghost_text = {
           enabled = true,
