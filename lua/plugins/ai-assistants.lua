@@ -1,5 +1,6 @@
 -- Decrypt API key and set it as an environment variable
-local gemini_api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/gemini_api_key.gpg' | tr -d '\n'")
+local gemini_api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/gemini_api_key.gpg'")
+gemini_api_key = gemini_api_key:gsub("^%s*(.-)%s*$", "%1") -- Trim leading/trailing whitespace
 return {
   {
     "ravitemer/mcphub.nvim",
