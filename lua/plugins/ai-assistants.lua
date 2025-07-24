@@ -25,11 +25,11 @@ return {
     -- https://www.youtube.com/watch?v=AUgbOckKxzw
     -- https://codecompanion.olimorris.dev
     "olimorris/codecompanion.nvim",
-    cmd = {
-      "CodeCompanion",
-      "CodeCompanionActions",
-      "CodeCompanionChat",
-      "CodeCompanionCmd",
+    keys = {
+      { "<leader>aa", "<cmd>CodeCompanion<CR>", mode = { "n", "v" }, desc = "CodeCompanion" },
+      { "<leader>ac", "<cmd>CodeCompanionChat<CR>", mode = { "n", "v" }, desc = "Companion Chat" },
+      { "<leader>ax", "<cmd>CodeCompanionCmd<CR>", mode = { "n", "v" }, desc = "Companion Cmd" },
+      { "<leader>as", "<cmd>CodeCompanionActions<CR>", mode = { "n", "v" }, desc = "Companion Actions" },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -42,7 +42,6 @@ return {
       "folke/fidget.nvim",
       "ravitemer/codecompanion-history.nvim",
     },
-
     init = function()
       require("utils.fidget-spinner"):init()
     end,
