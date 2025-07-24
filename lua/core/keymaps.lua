@@ -2,11 +2,15 @@ vim.g.mapleader = " " -- set leader to SPC
 
 local keymap = vim.keymap.set -- for conciseness
 
--- normal map
 keymap("n", ";;", function()
   local win = vim.v.count
   if win == 0 then
-    vim.cmd("b#")
+    local altbuf = vim.fn.expand("#")
+    if altbuf ~= "" then
+      vim.cmd("b#")
+    else
+      require("snacks.picker").recent()
+    end
   else
     vim.cmd(string.format("%dwincmd w", win))
   end
@@ -41,14 +45,6 @@ keymap("n", "<leader>ot", function()
   end
 end, { desc = "Toggle terminal" })
 
-keymap("v", "<leader>ot", function()
-  local arg = vim.v.count1
-  if arg == 1 then
-    vim.cmd("ToggleTermSendVisualSelection")
-  else
-    vim.cmd(string.format("ToggleTermSendVisualSelection %d", arg))
-  end
-end, { desc = "Toggle terminal send" })
 keymap("n", "_", "<cmd>Oil<CR>", opts("Toggle Oil"))
 
 local function open_file_at_line(open_cmd)
