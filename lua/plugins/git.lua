@@ -147,14 +147,30 @@ return {
     config = function()
       require("neogit").setup({
         kind = "tab",
-        commit_popup = {
-          kind = "vsplit",
+        commit_editor = {
+          kind = "tab",
+          show_staged_diff = true,
+          staged_diff_split_kind = "vsplit",
+          spell_check = true,
         },
-        preview_buffer = {
-          kind = "floating",
-        },
+
         integrations = {
-          diffview = true,
+          snacks = true,
+        },
+
+        mappings = {
+          commit_editor = {
+            ["q"] = "Close",
+            ["<c-c><c-c>"] = "Submit",
+            ["<c-c><c-k>"] = "Abort",
+            ["<m-p>"] = "PrevMessage",
+            ["<m-n>"] = "NextMessage",
+            ["<m-r>"] = "ResetMessage",
+          },
+          commit_editor_I = {
+            ["<c-c><c-c>"] = "Submit",
+            ["<c-c><c-k>"] = "Abort",
+          },
         },
       })
     end,
