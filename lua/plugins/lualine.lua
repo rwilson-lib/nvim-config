@@ -27,9 +27,10 @@ return {
         lualine_b = { "branch" },
         lualine_c = { "filename" },
         lualine_x = {
-          "encoding",
-          "fileformat",
+          -- "encoding",
+          -- "fileformat",
           "filetype",
+          { "rest", icon = "", fg = "#428890" },
           {
             function()
               -- Check if MCPHub is loaded
