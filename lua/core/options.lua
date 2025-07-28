@@ -14,8 +14,14 @@ opt.backspace = "indent,eol,start"
 -- apperance
 opt.termguicolors = true
 opt.background = "dark"
--- Set colorscheme
+
+-- Set colorscheme *after* setup
 cmd.colorscheme("catppuccin-mocha")
+
+-- Make background transparent
+cmd("hi Normal guibg=NONE ctermbg=NONE")
+cmd("hi NormalNC guibg=NONE ctermbg=NONE")
+cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE")
 
 opt.signcolumn = "yes"
 opt.number = true
@@ -80,3 +86,5 @@ vim.opt.showtabline = 1
 vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
 vim.opt.winborder = "rounded"
+
+vim.g.loaded_perl_provider = 0 -- disable perl
