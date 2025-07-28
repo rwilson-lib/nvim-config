@@ -145,7 +145,7 @@ return {
       },
     },
     config = function()
-      require("lua.plugins.git").setup({
+      require("neogit").setup({
         kind = "tab",
         commit_popup = {
           kind = "vsplit",
