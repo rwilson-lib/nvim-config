@@ -36,16 +36,15 @@ keymap("n", "<leader>og", "<cmd>Neogit<CR>", opts("Neogit"))
 keymap("n", "<leader>od", "<cmd>Dbee toggle<CR>", opts("Dbee"))
 keymap("n", "<leader>ou", "<cmd>UndotreeToggle<CR>", opts("Undotree"))
 keymap("n", "<leader>oz", "<cmd>Lazy<CR>", opts("Lazy"))
-keymap("n", "<leader>ot", function()
-  local arg = vim.v.count1
-  if arg == 1 then
-    vim.cmd("ToggleTerm")
-  else
-    vim.cmd(string.format("%dToggleTerm", arg))
-  end
-end, { desc = "Toggle terminal" })
-
 keymap("n", "_", "<cmd>Oil<CR>", opts("Toggle Oil"))
+keymap("n", "<leader>oT", function()
+  Snacks.terminal(nil, {
+    win = {
+      position = "float",
+      border = "single",
+    },
+  })
+end, opts("[T]oggle Terminal float"))
 
 local function open_file_at_line(open_cmd)
   local target = vim.fn.expand("<cWORD>")

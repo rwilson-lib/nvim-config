@@ -12,6 +12,7 @@ return {
           null_ls.builtins.formatting.goimports, -- go integration
           null_ls.builtins.formatting.stylua, -- lua formatter
           null_ls.builtins.formatting.prettier, -- js/ts formatter
+          null_ls.builtins.formatting.yamlfmt, -- js/ts formatter
           -- add more sources if needed
         },
         on_attach = function(client, bufnr)
