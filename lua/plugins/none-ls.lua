@@ -1,12 +1,7 @@
 return {
   {
-    "windwp/nvim-ts-autotag",
-    config = function()
-      require("nvim-ts-autotag").setup()
-    end,
-  },
-  {
     "nvimtools/none-ls.nvim",
+    event = "BufReadPre",
     config = function()
       -- 2. null-ls setup with formatter and autoformat on save
       local null_ls = require("null-ls")
