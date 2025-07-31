@@ -433,10 +433,11 @@ return {
       function()
         Snacks.terminal()
       end,
+      mode = { "n", "t", "i" },
       desc = "Toggle Terminal",
     },
     {
-      "<c-_>",
+      "<leader>ot",
       function()
         Snacks.terminal()
       end,

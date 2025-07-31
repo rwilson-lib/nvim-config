@@ -130,6 +130,9 @@ return {
 
       vim.diagnostic.config({
         virtual_text = true, --Enable vitual text
+        virtual_lines = {
+          current_line = true, -- show on all lines or just the cursor line
+        },
         underline = true,
         -- Set diagnostic icons
         signs = {
