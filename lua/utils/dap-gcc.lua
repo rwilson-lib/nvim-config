@@ -1,5 +1,4 @@
 local dap = require("dap")
--- NOTE
 -- https://www.youtube.com/watch?v=lsFoZIg-oDs
 dap.adapters.cppdbg = {
   id = "cppdbg",
@@ -60,7 +59,7 @@ dap.configurations.cpp = {
     type = "cppdbg",
     request = "launch",
     program = function()
-      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+      return vim.fn.input("Path to executable: " .. vim.fn.getcwd() .. "/" .. "file")
     end,
     cwd = "${workspaceFolder}",
     stopAtEntry = true,
@@ -74,7 +73,7 @@ dap.configurations.cpp = {
     miDebuggerPath = "/usr/bin/gdb",
     cwd = "${workspaceFolder}",
     program = function()
-      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+      return vim.fn.input("Path to executable: " .. vim.fn.getcwd() .. "/" .. "file")
     end,
   },
 }

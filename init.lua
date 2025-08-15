@@ -37,3 +37,17 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
     vim.notify("File changed on disk. Buffer reloaded.", vim.log.levels.INFO)
   end,
 })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    -- Your customization here
+    -- Make background transparent
+    vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+    vim.cmd("hi NormalNC guibg=NONE ctermbg=NONE")
+    vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE")
+    vim.cmd("hi WinSeparator guibg=none guifg=white")
+  end,
+})
+
+-- print(vim.env.TERM_PROGRAM or "Unknown")

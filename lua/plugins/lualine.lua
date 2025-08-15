@@ -9,22 +9,51 @@ return {
     end
     require("lualine").setup({
       options = {
-        ignore_focus = {
-          "undotree",
-          "Avante",
-          "dbee",
-          "dapui_scopes",
-          "dapui_stacks",
-          "dapui_watches",
-          "dapui_breakpoints",
-        },
+        icons_enabled = true,
+        theme = "auto",
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
       },
       sections = {
         lualine_a = {
           { win_buf_component },
           "mode",
         },
-        lualine_b = { "branch" },
+        lualine_b = {
+          {
+            "diagnostics",
+
+            -- Table of diagnostic sources, available sources are:
+            --   'nvim_lsp', 'nvim_diagnostic', 'nvim_workspace_diagnostic', 'coc', 'ale', 'vim_lsp'.
+            -- or a function that returns a table as such:
+            --   { error=error_cnt, warn=warn_cnt, info=info_cnt, hint=hint_cnt }
+            sources = { "nvim_diagnostic", "nvim_workspace_diagnostic" },
+
+            -- Displays diagnostics for the defined severity types
+            sections = { "error", "warn", "info", "hint" },
+
+            diagnostics_color = {
+              -- Same values as the general color option can be used here.
+              error = "DiagnosticError", -- Changes diagnostics' error color.
+              warn = "DiagnosticWarn", -- Changes diagnostics' warn color.
+              info = "DiagnosticInfo", -- Changes diagnostics' info color.
+              hint = "DiagnosticHint", -- Changes diagnostics' hint color.
+            },
+            symbols = { error = "E", warn = "W", info = "I", hint = "H" },
+            colored = true, -- Displays diagnostics status in color if set to true.
+            update_in_insert = false, -- Update diagnostics in insert mode.
+            always_visible = false, -- Show diagnostics even if there are none.
+            on_click = function()
+              Snacks.picker.diagnostics()
+            end,
+          },
+          {
+            "branch",
+            on_click = function()
+              Snacks.picker.git_branches()
+            end,
+          },
+        },
         lualine_c = { "filename" },
         lualine_x = {
           -- "encoding",
@@ -70,24 +99,15 @@ return {
                 return { fg = "#ff5555" } -- Red for error/stopped
               end
             end,
+            on_click = function()
+              vim.cmd("MCPHub")
+            end,
           },
         },
         lualine_y = {
-          "progrmss",
-          {
-            "diagnosti",
-            sources = { "nvim_workspace_diagnostic" },
-          },
+          "progress",
         },
         lualine_z = { "location" },
-      },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { win_buf_component, "filename" },
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = {},
       },
     })
   end,

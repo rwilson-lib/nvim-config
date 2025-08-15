@@ -10,49 +10,14 @@ return {
     { "mfussenegger/nvim-dap-python", lazy = true, ft = { "python" } },
   },
 
+  -- stylua: ignore
   keys = {
-    {
-      "<F5>",
-      function()
-        require("dap").continue()
-      end,
-      desc = "DAP: Continue/Start Debugging",
-    },
-    {
-      "<F9>",
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      desc = "Toggle Breakpoint",
-    },
-    {
-      "<Leader>dbb",
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      desc = "Toggle Breakpoint",
-    },
-    {
-      "<Leader>dbB",
-      function()
-        require("dap").set_breakpoint()
-      end,
-      desc = "DAP: Set Breakpoint with Condition",
-    },
-    {
-      "<Leader>dbl",
-      function()
-        require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-      end,
-      desc = "DAP: Set Logpoint",
-    },
-    {
-      "<Leader>drl",
-      function()
-        require("dap").run_last()
-      end,
-      desc = "DAP: Run Last Debug Session",
-    },
+    { "<F5>", function() require("dap").continue() end, desc = "DAP: Continue/Start Debugging", },
+    { "<F9>", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint", },
+    { "<Leader>dbb", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint", },
+    { "<Leader>dbB", function() require("dap").set_breakpoint() end, desc = "DAP: Set Breakpoint with Condition", },
+    { "<Leader>dbl", function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, desc = "DAP: Set Logpoint", },
+    { "<Leader>drl", function() require("dap").run_last() end, desc = "DAP: Run Last Debug Session", },
   },
 
   init = function()

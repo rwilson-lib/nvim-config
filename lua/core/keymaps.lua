@@ -71,3 +71,26 @@ end, { desc = "Split" })
 keymap("n", "gFv", function()
   open_file_at_line("vsplit")
 end, { desc = "Vsplit" })
+
+--
+-- keymap("n", "<leader>ot", function()
+--   local arg = vim.v.count1
+--   if arg == 1 then
+--     vim.cmd("ToggleTerm")
+--   else
+--     vim.cmd(string.format("%dToggleTerm", arg))
+--   end
+-- end, { desc = "Toggle terminal" })
+
+-- vim.keymap.set("n", "<leader>fp", function()
+--   require("neovim-project.project").discover_projects()
+-- end, { desc = "Find Projects" })
+--
+--
+-- vim.keymap.set("n", "<leader>fp", function()
+--   require("neovim-project.project").discover_projects()
+-- end, { desc = "Find Projects" })
+--
+-- vim.keymap.set("n", ";p", "<cmd>NeovimProjectLoadRecent<CR>", { desc = "Recent Project" })
+--
+-- vim.keymap.set("n", "<Leader>pr", "<cmd>NeovimProjectLoadRecent<CR>", { desc = "Recent Project" })

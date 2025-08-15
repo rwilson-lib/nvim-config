@@ -18,10 +18,10 @@ opt.background = "dark"
 -- Set colorscheme *after* setup
 cmd.colorscheme("catppuccin-mocha")
 
--- Make background transparent
 cmd("hi Normal guibg=NONE ctermbg=NONE")
 cmd("hi NormalNC guibg=NONE ctermbg=NONE")
 cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE")
+cmd("hi WinSeparator guibg=none guifg=white")
 
 opt.signcolumn = "yes"
 opt.number = true

@@ -1,5 +1,21 @@
 return {
   {
+    "akinsho/git-conflict.nvim",
+    version = "*",
+    config = function()
+      require("git-conflict").setup({
+        default_mappings = true, -- enable default keymaps
+        default_commands = true, -- enable default commands
+        disable_diagnostics = false, -- keep diagnostics while resolving conflicts
+        list_opener = "copen", -- command to open quickfix or location list
+        highlights = { -- custom highlight groups
+          incoming = "DiffText",
+          current = "DiffAdd",
+        },
+      })
+    end,
+  },
+  {
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup({
@@ -176,3 +192,14 @@ return {
     end,
   },
 }
+--
+-- local msg = string.format(
+--   [[You are an expert at following the Conventional Commit specification. Given the git diff listed below, please generate a commit message for me:
+--
+-- ```diff
+-- %s
+-- ```
+-- ]],
+--   vim.fn.system("git diff --no-ext-diff --staged")
+-- )
+--

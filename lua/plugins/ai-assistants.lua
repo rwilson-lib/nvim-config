@@ -3,6 +3,25 @@ local gemini_api_key = vim.fn.system("bash -c 'gpg --batch --quiet --decrypt ~/g
 gemini_api_key = gemini_api_key:gsub("^%s*(.-)%s*$", "%1") -- Trim leading/trailing whitespace
 return {
   {
+    "NickvanDyke/opencode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    ---@type opencode.Config
+    opts = {
+      -- Your configuration, if any
+    },
+    -- stylua: ignore
+    keys = {
+      { '<leader>aot', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
+      { '<leader>aoa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
+      { '<leader>aoa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
+      { '<leader>aop', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
+      { '<leader>aon', function() require('opencode').command('session_new') end, desc = 'New session', },
+      { '<leader>aoy', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
+      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
+      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
+    },
+  },
+  {
     "ravitemer/mcphub.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -27,8 +46,8 @@ return {
     -- https://codecompanion.olimorris.dev
     "olimorris/codecompanion.nvim",
     keys = {
-      { "<leader>aa", "<cmd>CodeCompanion<CR>", mode = { "n", "v" }, desc = "CodeCompanion" },
-      { "<leader>ac", "<cmd>CodeCompanionChat<CR>", mode = { "n", "v" }, desc = "Companion Chat" },
+      { "<leader>aca", "<cmd>CodeCompanion<CR>", mode = { "n", "v" }, desc = "CodeCompanion" },
+      { "<leader>acc", "<cmd>CodeCompanionChat<CR>", mode = { "n", "v" }, desc = "Companion Chat" },
       { "<leader>ax", "<cmd>CodeCompanionCmd<CR>", mode = { "n", "v" }, desc = "Companion Cmd" },
       { "<leader>as", "<cmd>CodeCompanionActions<CR>", mode = { "n", "v" }, desc = "Companion Actions" },
     },
