@@ -43,7 +43,6 @@ return {
 
     -- Load any extensions you need
     require("telescope").load_extension("fzf")
-    require("telescope").load_extension("scope")
     require("telescope").load_extension("rest")
   end,
 }

@@ -77,7 +77,7 @@ return {
           end
 
           -- Navigation
-          map("n", "]c", function()
+          local function nav_next()
             if vim.wo.diff then
               vim.cmd.normal({ "]c", bang = true })
             else
@@ -85,51 +85,52 @@ return {
             end
           end
 
-          map("n", "[c", function()
+          local function nav_prev()
             if vim.wo.diff then
               vim.cmd.normal({ "[c", bang = true })
             else
               gitsigns.nav_hunk("prev")
             end
-          end, { desc = "Gitsigns prev hunk" })
+          end
 
+          map("n", "]c", nav_next, { desc = "Gitsigns next hunk" })
+          map("n", "[c", nav_prev, { desc = "Gitsigns prev hunk" })
+          --
           -- Actions
-          map("n", ";gs", gitsigns.stage_hunk, { desc = "Gitsigns stage hunk" })
-          map("n", ";gr", gitsigns.reset_hunk, { desc = "Gitsigns reset hunk" })
-          map("n", ";gS", gitsigns.stage_buffer, { desc = "Gitsigns stage buf hunk" })
-          map("n", ";gR", gitsigns.reset_buffer, { desc = "Gitsigns reset buf hunk" })
+          map("n", "<localleader>gS", gitsigns.stage_buffer, { desc = "Gitsigns stage buf hunk" })
+          map("n", "<localleader>gR", gitsigns.reset_buffer, { desc = "Gitsigns reset buf hunk" })
 
-          map("v", ";gs", function()
+          map("v", "<localleader>gs", function()
             gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
           end, { desc = "Gitsigns stage hunk" })
 
-          map("v", ";gr", function()
+          map("v", "<localleader>gr", function()
             gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
           end, { desc = "Gitsigns reset hunk" })
 
-          map("n", ";gpp", gitsigns.preview_hunk, { desc = "Gitsigns preview hunk" })
-          map("n", ";gpi", gitsigns.preview_hunk_inline, { desc = "Gitsigns preview hunk inline" })
+          map("n", "<localleader>gpp", gitsigns.preview_hunk, { desc = "Gitsigns preview hunk" })
+          map("n", "<localleader>gpi", gitsigns.preview_hunk_inline, { desc = "Gitsigns preview hunk inline" })
 
-          map("n", ";gb", function()
+          map("n", "<localleader>gb", function()
             gitsigns.blame_line({ full = true })
           end, { desc = "Gitsigns blame" })
 
-          map("n", ";gd", gitsigns.diffthis, { desc = "Gitsigns show diff" })
+          map("n", "<localleader>gd", gitsigns.diffthis, { desc = "Gitsigns show diff" })
 
-          map("n", ";gD", function()
+          map("n", "<localleader>gD", function()
             gitsigns.diffthis("~")
           end, { desc = "Gitsigns show diff" })
 
-          map("n", ";gQ", function()
+          map("n", "<localleader>gQ", function()
             gitsigns.setqflist("all")
           end, { desc = "Gitsigns quickfix all" })
-          map("n", ";gq", gitsigns.setqflist, { desc = "Gitsigns quickfix list" })
-          map("n", ";gcc", "<cmd>Neogit commit<cr>", { desc = "Gitsigns commit" })
-          map("n", ";gcC", "<cmd>Neogit<cr>", { desc = "Gitsigns Neogit" })
+          map("n", "<localleader>gq", gitsigns.setqflist, { desc = "Gitsigns quickfix list" })
+          map("n", "<localleader>gcc", "<cmd>Neogit commit<cr>", { desc = "Gitsigns commit" })
+          map("n", "<localleader>gcC", "<cmd>Neogit<cr>", { desc = "Gitsigns Neogit" })
 
           -- Toggles
-          map("n", ";gtb", gitsigns.toggle_current_line_blame, { desc = "Gitsigns toggle inline blame" })
-          map("n", ";gtw", gitsigns.toggle_word_diff, { desc = "Gitsigns toggle word diff" })
+          map("n", "<localleader>gtb", gitsigns.toggle_current_line_blame, { desc = "Gitsigns toggle inline blame" })
+          map("n", "<localleader>gtw", gitsigns.toggle_word_diff, { desc = "Gitsigns toggle word diff" })
 
           -- Text object
           map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "Gitsigns hunk text object" })

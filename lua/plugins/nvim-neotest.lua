@@ -28,6 +28,7 @@ return {
     }, neotest_ns)
 
     require("neotest").setup({
+      log_level = "DEBUG",
       adapters = {
         require("neotest-go")({
           experimental = {
@@ -36,10 +37,14 @@ return {
           },
         }),
         require("neotest-jest")({
-          -- jestCommand = "npx jest --",
-          jestConfigFile = "jest.config.ts",
-          -- env = { CI = true },
-          cwd = function(_)
+          -- Command to run Jest
+          jestCommand = "npx jest",
+          -- Path to your Jest config
+          jestConfigFile = "jest.config.js",
+          -- Environment for CI mode
+          env = { CI = true },
+          -- Optional: run only current file by default
+          cwd = function(path)
             return vim.fn.getcwd()
           end,
         }),
@@ -49,7 +54,8 @@ return {
         open = "botright split | resize 15",
       },
       quickfix = {
-        open = false,
+        open = true,
+        enabled = true,
       },
     })
   end,

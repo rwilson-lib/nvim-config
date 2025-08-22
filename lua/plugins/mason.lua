@@ -30,6 +30,7 @@ return {
         "emmet_ls",
         "html",
         "gopls",
+        "marksman",
       },
       automatic_installation = true,
       automatic_enable = false,
@@ -53,7 +54,8 @@ return {
         "black", -- python formatter
         "pylint",
         "eslint_d",
-        "delve", -- ✅ Go debugger
+        "delve", -- Go debugger
+        "js-debug-adapter", -- NodeJs/TS
       },
     })
   end,

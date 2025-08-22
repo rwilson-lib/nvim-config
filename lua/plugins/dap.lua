@@ -29,9 +29,76 @@ return {
     local dapui = require("dapui")
     require("dap-go").setup()
     require("dap-python").setup("uv")
-
     ---@diagnostic disable-next-line: missing-parameter
     require("nvim-dap-virtual-text").setup()
+
+    -- https://tamerlan.dev/a-guide-to-debugging-applications-in-neovim/
+    -- Adapter: let nvim-dap start the js-debug adapter itself
+    dap.adapters["pwa-node"] = {
+      type = "server",
+      host = "localhost",
+      port = "${port}",
+      executable = {
+        command = "node",
+        args = {
+          vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+          "${port}",
+        },
+      },
+    }
+
+    dap.adapters["pwa-chrome"] = {
+      type = "server",
+      host = "localhost",
+      port = "5173",
+      executable = {
+        command = "node",
+        args = {
+          vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+          "5173",
+        },
+      },
+    }
+
+    -- Configurations for JS/TS/React
+    for _, language in ipairs({ "typescript", "typescriptreact", "javascript", "javascriptreact" }) do
+      dap.configurations[language] = {
+        {
+          type = "pwa-chrome",
+          request = "launch",
+          name = "Launch Chrome against localhost",
+          url = "http://localhost:5173",
+        },
+        {
+          type = "pwa-node",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach to process",
+          processId = require("dap.utils").pick_process,
+          cwd = "${workspaceFolder}",
+          sourceMaps = true,
+          protocol = "inspector",
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach to Vite (debug port 9229)",
+          port = 9229,
+          cwd = "${workspaceFolder}",
+          sourceMaps = true,
+          protocol = "inspector",
+        },
+      }
+    end
     dapui.setup()
 
     dap.listeners.before.attach.dapui_config = function()
@@ -50,23 +117,18 @@ return {
     vim.keymap.set("", "<F10>", function()
       dap.step_over()
     end, { desc = "DAP: Step Over" })
-
     vim.keymap.set("", "<F11>", function()
       dap.step_into()
     end, { desc = "DAP: Step Into" })
-
     vim.keymap.set("", "<F12>", function()
       dap.step_out()
     end, { desc = "DAP: Step Out" })
-
     vim.keymap.set("n", "<Leader>dir", function()
       dap.repl.open()
     end, { desc = "DAP: Open REPL" })
-
     vim.keymap.set({ "n", "v" }, "<eader>duh", function()
       require("dap.ui.widgets").hover()
     end, { desc = "DAP: Hover Variables" })
-
     vim.keymap.set({ "n", "v" }, "<Leader>dup", function()
       require("dap.ui.widgets").preview()
     end, { desc = "DAP: Preview Expression" })
