@@ -88,7 +88,3 @@ vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 vim.opt.winborder = "rounded"
 
 vim.g.loaded_perl_provider = 0 -- disable perl
-
--- For Ob
-vim.opt.concealcursor = "n"
-vim.opt.conceallevel = 2

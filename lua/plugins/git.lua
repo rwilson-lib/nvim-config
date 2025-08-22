@@ -83,7 +83,7 @@ return {
             else
               gitsigns.nav_hunk("next")
             end
-          end, { desc = "Gitsigns next hunk" })
+          end
 
           map("n", "[c", function()
             if vim.wo.diff then
