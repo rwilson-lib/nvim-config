@@ -14,6 +14,20 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+  pattern = "sql",
+  callback = function()
+    if vim.fn.exists("*db_ui#statusline") == 1 then
+      local statusline = vim.fn["db_ui#statusline"]({
+        show = { "db_name", "schema", "table" },
+        separator = " > ",
+        prefix = "",
+      })
+      vim.api.nvim_set_option_value("winbar", statusline, { scope = "local" })
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
   pattern = "gitcommit",
   callback = function()
     vim.opt_local.textwidth = 79

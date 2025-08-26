@@ -1,25 +1,19 @@
 return {
   {
-    "tpope/vim-dadbod",
-    event = "VeryLazy", -- Load only when needed
+    "kristijanhusak/vim-dadbod-ui",
     dependencies = {
-      {
-        "kristijanhusak/vim-dadbod-ui",
-        dependencies = {
-          { "tpope/vim-dadbod", lazy = true },
-        },
-        cmd = {
-          "DBUI",
-          "DBUIToggle",
-          "DBUIAddConnection",
-          "DBUIFindBuffer",
-        },
-        init = function()
-          -- Your DBUI configuration
-          vim.g.db_ui_use_nerd_fonts = 1
-        end,
-      },
+      { "tpope/vim-dadbod", lazy = true },
     },
+    cmd = {
+      "DBUI",
+      "DBUIToggle",
+      "DBUIAddConnection",
+      "DBUIFindBuffer",
+    },
+    init = function()
+      -- Your DBUI configuration
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
   },
   {
     "kndndrj/nvim-dbee",

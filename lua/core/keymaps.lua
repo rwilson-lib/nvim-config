@@ -2,7 +2,7 @@ vim.g.mapleader = " " -- set leader to SPC
 
 local keymap = vim.keymap.set -- for conciseness
 
-keymap("n", ";;", function()
+keymap("n", "<localleader><localleader>", function()
   local win = vim.v.count
   if win == 0 then
     local altbuf = vim.fn.expand("#")
@@ -16,7 +16,7 @@ keymap("n", ";;", function()
   end
 end, { desc = "switch to the previous buffer" })
 
-keymap("n", ";w", "<C-w>", { desc = "Send C-w buffer" })
+keymap("n", "<localleader>w", "<C-w>", { desc = "Send C-w buffer" })
 
 -- command map
 keymap("c", "<C-j>", "<Down>", { desc = "Cmd hist next" })
@@ -72,6 +72,7 @@ keymap("n", "gFv", function()
   open_file_at_line("vsplit")
 end, { desc = "Vsplit" })
 
+vim.keymap.set("n", "<leader>fs", "<cmd>SessionManager load_session<CR>", { desc = "Load Session" })
 --
 -- keymap("n", "<leader>ot", function()
 --   local arg = vim.v.count1
@@ -90,7 +91,3 @@ end, { desc = "Vsplit" })
 -- vim.keymap.set("n", "<leader>fp", function()
 --   require("neovim-project.project").discover_projects()
 -- end, { desc = "Find Projects" })
---
--- vim.keymap.set("n", ";p", "<cmd>NeovimProjectLoadRecent<CR>", { desc = "Recent Project" })
---
--- vim.keymap.set("n", "<Leader>pr", "<cmd>NeovimProjectLoadRecent<CR>", { desc = "Recent Project" })
