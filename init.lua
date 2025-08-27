@@ -64,4 +64,16 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
--- print(vim.env.TERM_PROGRAM or "Unknown")
+vim.api.nvim_create_autocmd("ModeChanged", {
+  pattern = "*:[vV\x16]", -- match entering any Visual mode (character, line, block)
+  callback = function()
+    vim.opt.relativenumber = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  pattern = ":",
+  callback = function()
+    vim.opt.relativenumber = false
+  end,
+})

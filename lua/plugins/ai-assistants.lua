@@ -187,13 +187,15 @@ return {
           },
         },
         adapters = {
-          gemini = function()
-            return require("codecompanion.adapters").extend("gemini", {
-              env = {
-                api_key = gemini_api_key,
-              },
-            })
-          end,
+          http = {
+            gemini = function()
+              return require("codecompanion.adapters").extend("gemini", {
+                env = {
+                  api_key = gemini_api_key,
+                },
+              })
+            end,
+          },
         },
       })
     end,
