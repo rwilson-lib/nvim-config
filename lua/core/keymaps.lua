@@ -73,6 +73,7 @@ keymap("n", "gFv", function()
 end, { desc = "Vsplit" })
 
 vim.keymap.set("n", "<leader>fs", "<cmd>SessionManager load_session<CR>", { desc = "Load Session" })
+
 --
 -- keymap("n", "<leader>ot", function()
 --   local arg = vim.v.count1

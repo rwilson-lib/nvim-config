@@ -26,6 +26,12 @@ cmd("hi WinSeparator guibg=none guifg=white")
 opt.signcolumn = "yes"
 opt.number = true
 
+-- Make Neovim react instantly to key sequences
+vim.o.timeout = true
+vim.o.timeoutlen = 0
+
+vim.o.autoread = true
+
 -- buffers and windows
 opt.splitright = true
 opt.splitbelow = true
