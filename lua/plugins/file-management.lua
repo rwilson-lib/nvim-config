@@ -2,7 +2,7 @@ return {
   {
     "mikavilpas/yazi.nvim",
     keys = {
-      { "\\", "<cmd>Yazi<CR>", desc = "Toggle Yazi", silent = true },
+      { "\\", "<cmd>Yazi toggle<CR>", desc = "Toggle Yazi", silent = true },
     },
     opst = {},
   },

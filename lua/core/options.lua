@@ -28,7 +28,7 @@ opt.number = true
 
 -- Make Neovim react instantly to key sequences
 vim.o.timeout = true
-vim.o.timeoutlen = 0
+vim.o.timeoutlen = 200
 
 vim.o.autoread = true
 

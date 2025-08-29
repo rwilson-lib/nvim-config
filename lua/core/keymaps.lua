@@ -2,6 +2,9 @@ vim.g.mapleader = " " -- set leader to SPC
 
 local keymap = vim.keymap.set -- for conciseness
 
+vim.keymap.set("o", "id", "i[", { noremap = true })
+vim.keymap.set("o", "ad", "a[", { noremap = true })
+
 keymap("n", "<localleader><localleader>", function()
   local win = vim.v.count
   if win == 0 then
