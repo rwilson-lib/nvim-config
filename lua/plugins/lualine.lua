@@ -1,6 +1,9 @@
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+    "Exafunction/windsurf.vim",
+  },
   config = function()
     local function win_buf_component()
       local win = vim.fn.winnr()
@@ -45,6 +48,15 @@ return {
             always_visible = false, -- Show diagnostics even if there are none.
             on_click = function()
               Snacks.picker.diagnostics()
+            end,
+          },
+          {
+            function()
+              return vim.fn["codeium#GetStatusString"]()
+            end,
+            color = { fg = "#ffffff" }, -- optional: set color
+            on_click = function()
+              vim.fn["codeium#Chat"]()
             end,
           },
           {

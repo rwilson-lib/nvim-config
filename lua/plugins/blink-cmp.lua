@@ -206,7 +206,7 @@ return {
         per_filetype = {
           sql = { "dadbod", "cmp_dbee", "buffer", "snippets" },
           gitcomit = { "buffer", "conventional_commits" },
-          -- AvanteInput = { "avante", "path", "buffer" },
+          typr = {},
         },
         providers = {
           -- avante = {

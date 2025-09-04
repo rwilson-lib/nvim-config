@@ -82,5 +82,8 @@
         "/Users/rwilson/.config/nvim/lua",
         "${3rd}/luassert/library",
         "${3rd}/luv/library"
+    ],
+    "diagnostics.disable": [
+        "undefined-doc-name"
     ]
 }

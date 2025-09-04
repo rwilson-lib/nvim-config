@@ -46,6 +46,9 @@ opt.autoindent = true
 opt.ignorecase = true
 opt.smartcase = true
 
+--
+opt.cursorline = true
+
 -- manage files
 opt.swapfile = true -- Enable swapfile
 vim.opt.undofile = true -- Enable persistent undo

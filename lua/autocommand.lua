@@ -1,6 +1,8 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+local yank_group = vim.api.nvim_create_augroup("HighlightYank", { clear = true })
 autocmd("TextYankPost", {
+  group = yank_group,
   callback = function()
     local event = vim.v.event
     -- Check if the operator was 'y' (yank)
@@ -12,7 +14,9 @@ autocmd("TextYankPost", {
   desc = "Highlight yanked text (all types)",
 })
 
+local sql_group = vim.api.nvim_create_augroup("SqlGroup", { clear = true })
 autocmd("FileType", {
+  group = sql_group,
   pattern = "sql",
   callback = function()
     if vim.fn.exists("*db_ui#statusline") == 1 then
@@ -26,7 +30,9 @@ autocmd("FileType", {
   end,
 })
 
+local gitcommit_group = vim.api.nvim_create_augroup("VisualRelativeNumbers", { clear = true })
 autocmd("FileType", {
+  group = gitcommit_group,
   pattern = "gitcommit",
   callback = function()
     vim.opt_local.textwidth = 79
@@ -36,20 +42,26 @@ autocmd("FileType", {
   end,
 })
 
+local checktime_group = vim.api.nvim_create_augroup("CheckTime", { clear = true })
 -- Reload the file if it's changed outside Neovim
 autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  group = checktime_group,
   pattern = "*",
   command = "checktime",
 })
 
+local buf_change_group = vim.api.nvim_create_augroup("BufChange", { clear = true })
 autocmd("FileChangedShellPost", {
+  group = buf_change_group,
   pattern = "*",
   callback = function()
     vim.notify("File changed on disk. Buffer reloaded.", vim.log.levels.INFO)
   end,
 })
 
+local my_colors_group = vim.api.nvim_create_augroup("MyColors", { clear = true })
 autocmd("ColorScheme", {
+  group = my_colors_group,
   pattern = "*",
   callback = function()
     -- Your customization here
@@ -61,7 +73,10 @@ autocmd("ColorScheme", {
   end,
 })
 
+local rel_num_group = vim.api.nvim_create_augroup("VisualRelativeNumbers", { clear = true })
+
 autocmd("ModeChanged", {
+  group = rel_num_group,
   pattern = "*:[ovV\x16]", -- match entering any Visual mode (character, line, block)
   callback = function()
     vim.wo.relativenumber = true
@@ -69,6 +84,15 @@ autocmd("ModeChanged", {
 })
 
 autocmd("ModeChanged", {
+  group = rel_num_group,
+  pattern = "[vV\x16]:*", -- match leaving any Visual mode (character, line, block)
+  callback = function()
+    vim.wo.relativenumber = false
+  end,
+})
+
+autocmd("ModeChanged", {
+  group = rel_num_group,
   pattern = "*:no*", -- match any old mode → operator-pending flagged
   callback = function()
     vim.wo.relativenumber = true
@@ -76,6 +100,7 @@ autocmd("ModeChanged", {
 })
 
 autocmd("ModeChanged", {
+  group = rel_num_group,
   pattern = "no*:*", -- leaving operator-pending flagged
   callback = function()
     vim.wo.relativenumber = false
@@ -83,8 +108,20 @@ autocmd("ModeChanged", {
 })
 
 autocmd("CmdlineEnter", {
+  group = rel_num_group,
   pattern = ":",
   callback = function()
     vim.opt.relativenumber = false
+  end,
+})
+
+local typr_group = vim.api.nvim_create_augroup("Typr", { clear = true })
+autocmd("FileType", {
+  group = typr_group,
+  pattern = "typr",
+  callback = function()
+    vim.g.codeium_filetypes = {
+      typr = false,
+    }
   end,
 })

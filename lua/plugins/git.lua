@@ -1,21 +1,5 @@
 return {
   {
-    "akinsho/git-conflict.nvim",
-    version = "*",
-    config = function()
-      require("git-conflict").setup({
-        default_mappings = true, -- enable default keymaps
-        default_commands = true, -- enable default commands
-        disable_diagnostics = false, -- keep diagnostics while resolving conflicts
-        list_opener = "copen", -- command to open quickfix or location list
-        highlights = { -- custom highlight groups
-          incoming = "DiffText",
-          current = "DiffAdd",
-        },
-      })
-    end,
-  },
-  {
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup({
@@ -190,6 +174,22 @@ return {
           },
         },
       })
+    end,
+  },
+  {
+    "akinsho/git-conflict.nvim",
+    event = "VeryLazy",
+    version = "*",
+    dependencies = {
+      {
+        "yorickpeterse/nvim-pqf",
+        config = function()
+          require("pqf").setup()
+        end,
+      },
+    },
+    config = function()
+      require("git-conflict").setup()
     end,
   },
 }

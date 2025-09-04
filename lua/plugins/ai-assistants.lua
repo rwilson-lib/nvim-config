@@ -45,6 +45,12 @@ return {
     -- https://www.youtube.com/watch?v=AUgbOckKxzw
     -- https://codecompanion.olimorris.dev
     "olimorris/codecompanion.nvim",
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionChat",
+      "CodeCompanionCmd",
+      "CodeCompanionActions",
+    },
     keys = {
       { "<leader>aca", "<cmd>CodeCompanion<CR>", mode = { "n", "v" }, desc = "CodeCompanion" },
       { "<leader>acc", "<cmd>CodeCompanionChat<CR>", mode = { "n", "v" }, desc = "Companion Chat" },
@@ -63,6 +69,7 @@ return {
       "ravitemer/codecompanion-history.nvim",
     },
     init = function()
+      vim.cmd.cnoreabbrev("CC CodeCompanion")
       require("utils.fidget-spinner"):init()
     end,
 
