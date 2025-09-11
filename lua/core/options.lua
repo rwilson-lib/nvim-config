@@ -79,6 +79,8 @@ end
 vim.opt.directory = swapdir .. "//"
 vim.opt.swapfile = true -- Ensure swap files are enabled (default, but good to be explicit)
 
+-- recursively find files
+vim.opt.path = { ".", "**" }
 -- folds
 vim.o.foldcolumn = "1" -- set foldcolumn to 1
 

@@ -54,7 +54,21 @@ return {
             function()
               return vim.fn["codeium#GetStatusString"]()
             end,
-            color = { fg = "#ffffff" }, -- optional: set color
+            color = function()
+              local status = vim.fn["codeium#GetStatusString"]()
+              if status == "OFF" then
+                return { fg = "#6c7086" } -- Gray for not loaded
+              end
+
+              if status:find("ON") ~= nil then
+                return { fg = "#50fa7b" } -- Green for connected
+              elseif status:find("*") ~= nil then
+                return { fg = "#ffb86c" } -- Orange for connecting
+              else
+                return { fg = "#2196F3" } -- Red for error/stopped
+              end
+            end,
+
             on_click = function()
               vim.fn["codeium#Chat"]()
             end,

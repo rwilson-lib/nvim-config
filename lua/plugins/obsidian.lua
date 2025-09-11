@@ -10,6 +10,7 @@ return {
   --   "BufReadPre path/to/my-vault/*.md",
   --   "BufNewFile path/to/my-vault/*.md",
   -- },
+  cmd = { "ObsidianOpen", "ObsidianQuickSwitch" },
   dependencies = {
     -- Required.
     "nvim-lua/plenary.nvim",

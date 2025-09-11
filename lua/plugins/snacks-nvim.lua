@@ -9,6 +9,9 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
+      animation = {
+        enabled = true,
+      },
       bigfile = { enabled = true },
       dashboard = { enabled = false },
       explorer = { enabled = true },

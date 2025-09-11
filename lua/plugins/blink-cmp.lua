@@ -116,7 +116,6 @@ return {
     dependencies = {
       -- { "Kaiser-Yang/blink-cmp-avante", lazy = true },
       { "disrupted/blink-cmp-conventional-commits", ft = "gitcommit", lazy = true },
-      { "rafamadriz/friendly-snippets" },
       {
         "L3MON4D3/LuaSnip",
         -- follow latest release.

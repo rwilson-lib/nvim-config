@@ -4,22 +4,54 @@ gemini_api_key = gemini_api_key:gsub("^%s*(.-)%s*$", "%1") -- Trim leading/trail
 return {
   {
     "NickvanDyke/opencode.nvim",
-    dependencies = { "folke/snacks.nvim" },
-    ---@type opencode.Config
-    opts = {
-      -- Your configuration, if any
+    dependencies = {
+      -- Recommended for better prompt input, and required to use `opencode.nvim`'s embedded terminal — otherwise optional
+      { "folke/snacks.nvim", opts = { input = { enabled = true } } },
     },
-    -- stylua: ignore
-    keys = {
-      { '<leader>aot', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
-      { '<leader>aoa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
-      { '<leader>aoa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
-      { '<leader>aop', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
-      { '<leader>aon', function() require('opencode').command('session_new') end, desc = 'New session', },
-      { '<leader>aoy', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
-      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
-      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
-    },
+    config = function()
+      -- `opencode.nvim` passes options via a global variable instead of `setup()` for faster startup
+      ---@type opencode.Opts
+      vim.g.opencode_opts = {
+        -- Your configuration, if any — see `lua/opencode/config.lua`
+      }
+
+      -- Required for `opts.auto_reload`
+      vim.opt.autoread = true
+
+      -- Recommended keymaps
+      vim.keymap.set("n", "<leader>aot", function()
+        require("opencode").toggle()
+      end, { desc = "Toggle opencode" })
+      vim.keymap.set("n", "<leader>aoA", function()
+        require("opencode").ask()
+      end, { desc = "Ask opencode" })
+      vim.keymap.set("n", "<leader>aoa", function()
+        require("opencode").ask("@cursor: ")
+      end, { desc = "Ask opencode about this" })
+      vim.keymap.set("v", "<leader>aoa", function()
+        require("opencode").ask("@selection: ")
+      end, { desc = "Ask opencode about selection" })
+      vim.keymap.set("n", "<leader>aon", function()
+        require("opencode").command("session_new")
+      end, { desc = "New opencode session" })
+      vim.keymap.set("n", "<leader>aoy", function()
+        require("opencode").command("messages_copy")
+      end, { desc = "Copy last opencode response" })
+      vim.keymap.set("n", "<S-C-u>", function()
+        require("opencode").command("messages_half_page_up")
+      end, { desc = "Messages half page up" })
+      vim.keymap.set("n", "<S-C-d>", function()
+        require("opencode").command("messages_half_page_down")
+      end, { desc = "Messages half page down" })
+      vim.keymap.set({ "n", "v" }, "<leader>aos", function()
+        require("opencode").select()
+      end, { desc = "Select opencode prompt" })
+
+      -- Example: keymap for custom prompt
+      vim.keymap.set("n", "<leader>aoe", function()
+        require("opencode").prompt("Explain @cursor and its context")
+      end, { desc = "Explain this code" })
+    end,
   },
   {
     "ravitemer/mcphub.nvim",
@@ -78,6 +110,55 @@ return {
         opts = {
           -- Set debug logging
           -- log_level = "DEBUG",
+        },
+        prompt_library = {
+          ["Commit Message"] = {
+            strategy = "chat",
+            description = "Generate a Conventional Commit message from staged changes",
+            opts = {
+              modes = { "n", "i" },
+              short_name = "gcm",
+              auto_submit = true,
+              stop_context_insertion = true,
+              user_prompt = false, -- fully automated, no extra user input needed
+              placement = "add", -- or "replace"|"add"|"before"|"chat"
+
+              -- pre_hook = function()
+              --   local bufnr = vim.api.nvim_create_buf(true, false)
+              --   vim.api.nvim_set_current_buf(bufnr)
+              --   vim.api.nvim_set_option_value("filetype", "gitcommit", { buf = bufnr })
+              --   return bufnr
+              -- end,
+            },
+            prompts = {
+              {
+                role = "system",
+                content = "You are an expert at writing commit messages following the Conventional Commit specification.",
+              },
+              {
+                role = "user",
+                content = function()
+                  local diff = vim.fn.system("git diff --no-ext-diff --staged")
+
+                  return string.format(
+                    [[Given the staged git diff below, generate a clear and concise Conventional Commit message:
+Strict requirements:
+- Output ONLY the commit message, nothing else (no explanations, no markdown, no formatting).
+- The message must follow the Conventional Commit specification.
+- Use type(scope): subject structure.
+- Keep the subject under 72 characters.
+- Add a body if needed for clarity, wrapped at 72 characters per line.
+- If there is a breaking change, add a "BREAKING CHANGE:" footer describing it.
+- Do not include code snippets, commentary, or extra text.
+```diff
+%s
+```]],
+                    diff
+                  )
+                end,
+              },
+            },
+          },
         },
         strategies = {
           chat = {
@@ -207,123 +288,4 @@ return {
       })
     end,
   },
-  -- https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
-  -- {
-  --   "yetone/avante.nvim",
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --     "MunifTanjim/nui.nvim",
-  --     --- The below dependencies are optional,
-  --     -- "echasnovski/mini.pick", -- for file_selector provider mini.pic
-  --     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-  --     "folke/snacks.nvim", -- for input provider snacks
-  --     -- "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-  --     -- "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-  --     -- "ibhagwan/fzf-lua", -- for file_selector provider fzf
-  --     -- "stevearc/dressing.nvim", -- for input provider dressing
-  --     -- "zbirenbaum/copilot.lua", -- for providers='copilot'
-  --     {
-  --       -- support for image pasting
-  --       "HakonHarnes/img-clip.nvim",
-  --       event = "VeryLazy",
-  --       opts = {
-  --         -- recommended settings
-  --         default = {
-  --           embed_image_as_base64 = false,
-  --           prompt_for_file_name = false,
-  --           drag_and_drop = {
-  --             insert_mode = true,
-  --           },
-  --           -- required for Windows users
-  --           use_absolute_path = true,
-  --         },
-  --       },
-  --     },
-  --     {
-  --       -- Make sure to set this up properly if you have lazy=true
-  --       "MeanderingProgrammer/render-markdown.nvim",
-  --       opts = {
-  --         file_types = { "markdown", "Avante" },
-  --       },
-  --       ft = { "markdown", "Avante" },
-  --     },
-  --   },
-  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  --   -- ⚠️ must add this setting! ! !
-  --   build = function()
-  --     -- conditionally use the correct build system for the current OS
-  --     if vim.fn.has("win32") == 1 then
-  --       return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
-  --     else
-  --       return "make"
-  --     end
-  --   end,
-  --   event = "VeryLazy",
-  --   config = function()
-  --     vim.fn.setenv("AVANTE_GEMINI_API_KEY", gemini_api_key)
-  --     require("avante").setup({
-  --       -- system_prompt as function ensures LLM always has latest MCP server state
-  --       -- This is evaluated for every message, even in existing chats
-  --       provider = "gemini",
-  --       providers = {
-  --         gemini = {
-  --           endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
-  --           model = "gemini-2.0-flash",
-  --           timeout = 30000, -- Timeout in milliseconds
-  --           context_window = 1048576,
-  --           use_ReAct_prompt = true,
-  --           extra_request_body = {
-  --             generationConfig = {
-  --               temperature = 0.75,
-  --             },
-  --           },
-  --         },
-  --       },
-  --       behaviour = {
-  --         enable_token_counting = false,
-  --       },
-  --       windows = {
-  --         ---@alias AvantePosition "right" | "left" | "top" | "bottom" | "smart"
-  --         ---@type AvantePosition
-  --         position = "right",
-  --         fillchars = "eob: ",
-  --         wrap = true, -- similar to vim.o.wrap
-  --         width = 30, -- default % based on available width in vertical layout
-  --         height = 30, -- default % based on available height in horizontal layout
-  --         sidebar_header = {
-  --           enabled = true, -- true, false to enable/disable the header
-  --           align = "center", -- left, center, right for title
-  --           rounded = true,
-  --         },
-  --         input = {
-  --           prefix = "> ",
-  --           height = 10, -- Height of the input window in vertical layout
-  --         },
-  --         edit = {
-  --           border = { " ", " ", " ", " ", " ", " ", " ", " " },
-  --           start_insert = true, -- Start insert mode when opening the edit window
-  --         },
-  --         ask = {
-  --           floating = true, -- Open the 'AvanteAsk' prompt in a floating window
-  --           border = { " ", " ", " ", " ", " ", " ", " ", " " },
-  --           start_insert = true, -- Start insert mode when opening the ask window
-  --           ---@alias AvanteInitialDiff "ours" | "theirs"
-  --           ---@type AvanteInitialDiff
-  --           focus_on_apply = "ours", -- which diff to focus after applying
-  --         },
-  --       },
-  --       system_prompt = function()
-  --         local hub = require("mcphub").get_hub_instance()
-  --         return hub and hub:get_active_servers_prompt() or ""
-  --       end,
-  --
-  --       -- Using function prevents requiring mcphub before it's loaded
-  --       custom_tools = function()
-  --         return {
-  --           require("mcphub.extensions.avante").mcp_tool(),
-  --         }
-  --       end,
-  --     })
-  --   end,
-  -- },
 }

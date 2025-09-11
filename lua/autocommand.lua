@@ -47,7 +47,12 @@ local checktime_group = vim.api.nvim_create_augroup("CheckTime", { clear = true 
 autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
   group = checktime_group,
   pattern = "*",
-  command = "checktime",
+  callback = function()
+    --Only run checktime for nomal files buffer
+    if vim.bo.buftype == "" then
+      vim.cmd("checktime")
+    end
+  end,
 })
 
 local buf_change_group = vim.api.nvim_create_augroup("BufChange", { clear = true })
