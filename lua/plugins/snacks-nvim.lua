@@ -9,6 +9,9 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
+      terminal = {
+        true, -- This enables snacks.terminal
+      },
       animation = {
         enabled = true,
       },

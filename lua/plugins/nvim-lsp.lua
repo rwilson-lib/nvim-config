@@ -1,3 +1,4 @@
+Snacks = Snacks or {}
 return {
   {
     "numToStr/Comment.nvim",
@@ -35,105 +36,11 @@ return {
         end,
       },
     },
-    opts = {
-      servers = {
-        marksman = {
-          cmd = { "marksman", "server" },
-          filetypes = { "markdown", "markdown.mdx" },
-          root_dir = function(fname)
-            return require("lspconfig").util.root_pattern(".git", ".marksman.toml")(fname) or vim.fn.getcwd()
-          end,
-        },
-        clangd = {
-          filetypes = { "c", "cpp" },
-          cmd = { "clangd" },
-        },
-        gopls = {
-          settings = {
-            gopls = {
-              completeUnimported = true,
-              usePlaceholders = true,
-              semanticTokens = true,
-              staticcheck = true,
-              analyses = { unusedparams = true },
-            },
-          },
-        },
-        ts_ls = {},
-        cssls = {},
-        eslint = {},
-        html = {},
-        jsonls = {},
-        tailwindcss = {},
-        graphql = {},
-        emmet_ls = {
-          filetypes = {
-            "html",
-            "css",
-            "scss",
-            "javascriptreact",
-            "typescriptreact",
-            -- "jsx",
-            -- "tsx",
-          },
-          settings = {
-            emmet = {
-              showExpandedAbbreviation = "always", -- Show preview of expanded snippet
-              showAbbreviationSuggestions = true,
-              showSuggestionsAsSnippets = true,
-              syntaxProfiles = {
-                jsx = { attr_quotes = "double", self_closing_tag = true },
-                tsx = { attr_quotes = "double", self_closing_tag = true },
-              },
-              variables = {
-                lang = "en",
-              },
-              preferences = {
-                ["bem.enabled"] = false,
-              },
-              excludeLanguages = {},
-            },
-          },
-        },
-        lua_ls = {
-          -- Server-specific settings. See `:help lsp-quickstart`
-          settings = {
-            lua_ls = {
-              runtime = {
-                version = "LuaJIT",
-              },
-              hint = {
-                enable = true, -- ✅ enable inlay hints
-                -- arrayIndex = "Auto",
-                -- await = true,
-                -- paramName = "All", -- Show parameter names
-                -- paramType = true, -- Show parameter types
-                -- semicolon = "Disable",
-                -- setType = true, -- Show variable types
-              },
-              diagnostics = {
-                globals = { "vim" },
-              },
-              workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = true,
-              },
-              completion = { callSnippet = "Replace" },
-            },
-          },
-        },
-      },
-    },
 
-    config = function(_, opts)
-      local lspconfig = require("lspconfig")
-      Snacks = Snacks or {}
-      for server, config in pairs(opts.servers) do
-        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
-        vim.lsp.config(server, config)
-        vim.lsp.enable(server)
-      end
+    config = function()
+      local servers = { "lua_ls", "emmet_ls", "html", "gopls", "marksman" }
+
+      vim.lsp.enable(servers)
 
       vim.diagnostic.config({
         virtual_text = true, --Enable vitual text
