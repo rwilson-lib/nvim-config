@@ -11,7 +11,41 @@ autocmd("TextYankPost", {
       vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
     end
   end,
-  desc = "Highlight yanked text (all types)",
+  desc = "Highlight yanked text all types",
+})
+
+local dotenv_group = vim.api.nvim_create_augroup("dotenv_ft", { clear = true })
+autocmd("BufRead", {
+  group = dotenv_group,
+  pattern = { ".env", ".env.*" },
+  callback = function()
+    vim.bo.filetype = "dosini"
+  end,
+  desc = "Set dotenv filetype",
+})
+
+local win_resize = vim.api.nvim_create_augroup("WinResize", { clear = true })
+autocmd("VimResized", {
+  group = win_resize,
+  command = "wincmd =",
+  desc = "Window resize",
+})
+
+local cur_restore_group = vim.api.nvim_create_augroup("CursorRestore", { clear = true })
+autocmd("BufReadPost", {
+  group = cur_restore_group,
+  callback = function(args)
+    local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
+    local line_count = vim.api.nvim_buf_line_count(args.buf)
+    if mark[1] > 0 and mark[1] <= line_count then
+      vim.api.nvim_win_set_cursor(0, mark)
+      -- defer centering slightly so it's applied after render vim. schedule(function()
+      vim.schedule(function()
+        vim.cmd("normal! zz")
+      end)
+    end
+  end,
+  desc = "Restore cursor position",
 })
 
 local sql_group = vim.api.nvim_create_augroup("SqlGroup", { clear = true })

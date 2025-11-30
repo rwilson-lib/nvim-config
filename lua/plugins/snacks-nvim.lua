@@ -1,8 +1,5 @@
+-- https://deepwiki.com/folke/snacks.nvim/2.6-actions-and-keymaps
 return {
-  {
-    "sphamba/smear-cursor.nvim",
-    opts = {},
-  },
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -30,9 +27,101 @@ return {
       },
       picker = {
         enabled = true,
-        layout = {
-          preset = "telescope",
-          circle = true,
+        gh = {
+          enable = true, -- ✅ this turns on all the gh pickers
+        },
+        layouts = {
+          custom = {
+            layout = {
+              box = "vertical",
+              backdrop = false,
+              row = -1,
+              width = 0,
+              height = 0.4,
+              border = "top",
+              title = " {title} {live} {flags}",
+              title_pos = "left",
+              { win = "input", height = 1, border = "bottom" },
+              {
+                box = "horizontal",
+                { win = "list", border = "none" },
+                { win = "preview", title = "{preview}", width = 0.6, border = "left" },
+              },
+            },
+          },
+        },
+        layout = { preset = "telescope", circle = true },
+        actions = {
+          my_custom_action = function(picker, item)
+            -- Hide picker while selecting window
+            if not picker.layout.split then
+              picker.layout:hide()
+            end
+
+            local win = Snacks.picker.util.pick_win({ main = picker.main })
+
+            if win then
+              picker.main = win
+              local buf = item.buf
+              local pos = item.pos
+              local lnum = (pos and pos[1]) or 1
+              local col = (pos and pos[2]) or 1
+              -- Open in selected window
+
+              if item.file then
+                -- vim.api.nvim_set_current_win(win)
+                buf = vim.fn.bufadd(item.file)
+                vim.fn.bufload(buf)
+                -- Make it appear in :ls
+                vim.bo[buf].buflisted = true
+                -- Keep it hidden (won't force a window)
+                vim.bo[buf].bufhidden = "hide"
+              end
+              -- vim.api.nvim_win_set_cursor(win, { lnum, col })
+              require("dap.breakpoints").toggle(nil, buf, lnum)
+
+              -- for key, value in pairs(item) do
+              --   print("Key:", key, "Value:", value)
+              -- end
+            end
+
+            -- Restore picker
+            if not picker.layout.split then
+              picker.layout:unhide()
+            end
+          end,
+        },
+        sources = {
+          lines = {
+            win = {
+              input = {
+                keys = {
+                  ["<C-b>"] = { "my_custom_action", mode = { "n", "i" } },
+                },
+              },
+            },
+          },
+          lsp_workspace_symbols = {
+            layout = "custom",
+            win = {
+              input = {
+                keys = {
+                  ["<C-b>"] = { "my_custom_action", mode = { "n", "i" } },
+                },
+              },
+            },
+          },
+          lsp_symbols = {
+            layout = "custom",
+            win = {
+              input = {
+                keys = {
+                  ["<C-b>"] = { "my_custom_action", mode = { "n", "i" } },
+                },
+              },
+            },
+          },
+          grep = { layout = "custom" },
         },
         win = {
           input = {
@@ -76,8 +165,13 @@ return {
     { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File", },
     { "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files", },
     { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files", },
-    -- { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects", },
     { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent", },
+    -- { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects", },
+    -- gh
+    { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
+    { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+    { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
+    { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
     -- git
     { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches", },
     { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log", },

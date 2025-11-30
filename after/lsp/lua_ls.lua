@@ -1,7 +1,7 @@
 return {
   -- Server-specific settings. See `:help lsp-quickstart`
   settings = {
-    lua_ls = {
+    Lua = {
       runtime = {
         version = "LuaJIT",
       },
@@ -18,7 +18,10 @@ return {
         globals = { "vim" },
       },
       workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
+        library = {
+          vim.api.nvim_get_runtime_file("", true),
+          "${3rd}/luassert/library",
+        },
         checkThirdParty = true,
       },
       completion = { callSnippet = "Replace" },

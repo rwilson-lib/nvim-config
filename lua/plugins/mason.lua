@@ -31,6 +31,7 @@ return {
         "html",
         "gopls",
         "marksman",
+        "basedpyright",
       },
       automatic_installation = true,
       automatic_enable = false,
@@ -42,6 +43,7 @@ return {
         "goimports", -- Go formatter (gopls will often use this)
         "pgformatter",
         "stylua",
+        "ruff",
       },
       automatic_installation = true,
     })
@@ -55,6 +57,7 @@ return {
         "pylint",
         "eslint_d",
         "delve", -- Go debugger
+        "debugpy", -- Python debugger
         "js-debug-adapter", -- NodeJs/TS
       },
     })

@@ -38,7 +38,21 @@ return {
     },
 
     config = function()
-      local servers = { "lua_ls", "emmet_ls", "html", "gopls", "marksman" }
+      local servers = {
+        "lua_ls",
+        "emmet_ls",
+        "html",
+        "gopls",
+        "marksman",
+        "ts_ls",
+        "cssls",
+        "eslint",
+        "html",
+        "jsonls",
+        "tailwindcss",
+        "graphql",
+        "basedpyright",
+      }
 
       vim.lsp.enable(servers)
 
@@ -76,7 +90,10 @@ return {
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
           if client.server_capabilities.documentSymbolProvider then
             -- set winbar to nvim-navic in the local buf
-            vim.api.nvim_buf_set_option(0, "winbar", "%{%v:lua.require'nvim-navic'.get_location()%}")
+            local win = vim.fn.bufwinid(ev.buf)
+            if win ~= -1 then
+              vim.api.nvim_set_option_value("winbar", "%{%v:lua.require'nvim-navic'.get_location()%}", { win = win })
+            end
           end
 
           keymap("n", "gD", function()
