@@ -58,32 +58,23 @@ return {
               picker.layout:hide()
             end
 
-            local win = Snacks.picker.util.pick_win({ main = picker.main })
+            local buf = item.buf
+            local pos = item.pos
+            local lnum = (pos and pos[1]) or 1
 
-            if win then
-              picker.main = win
-              local buf = item.buf
-              local pos = item.pos
-              local lnum = (pos and pos[1]) or 1
-              local col = (pos and pos[2]) or 1
-              -- Open in selected window
-
-              if item.file then
-                -- vim.api.nvim_set_current_win(win)
-                buf = vim.fn.bufadd(item.file)
-                vim.fn.bufload(buf)
-                -- Make it appear in :ls
-                vim.bo[buf].buflisted = true
-                -- Keep it hidden (won't force a window)
-                vim.bo[buf].bufhidden = "hide"
-              end
-              -- vim.api.nvim_win_set_cursor(win, { lnum, col })
-              require("dap.breakpoints").toggle(nil, buf, lnum)
-
-              -- for key, value in pairs(item) do
-              --   print("Key:", key, "Value:", value)
-              -- end
+            if item.file then
+              -- vim.api.nvim_set_current_win(win)
+              buf = vim.fn.bufadd(item.file)
+              vim.fn.bufload(buf)
+              -- Make it appear in :ls
+              vim.bo[buf].buflisted = true
+              -- Keep it hidden (won't force a window)
+              vim.bo[buf].bufhidden = "hide"
             end
+            require("dap.breakpoints").toggle(nil, buf, lnum)
+            -- for key, value in pairs(item) do
+            --   print("Key:", key, "Value:", value)
+            -- end
 
             -- Restore picker
             if not picker.layout.split then
@@ -112,7 +103,10 @@ return {
             },
           },
           lsp_symbols = {
-            layout = "custom",
+            layout = {
+              preview = "main",
+              preset = "ivy",
+            },
             win = {
               input = {
                 keys = {

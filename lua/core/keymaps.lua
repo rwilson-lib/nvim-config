@@ -2,8 +2,12 @@ vim.g.mapleader = " " -- set leader to SPC
 
 local keymap = vim.keymap.set -- for conciseness
 
-vim.keymap.set("o", "id", "i[", { noremap = true })
-vim.keymap.set("o", "ad", "a[", { noremap = true })
+-- vim.keymap.set("o", "id", "i[", { noremap = true })
+-- vim.keymap.set("o", "ad", "a[", { noremap = true })
+vim.keymap.set({ "o", "x", "s" }, "ir", "i[", { noremap = true })
+vim.keymap.set({ "o", "x", "s" }, "ar", "a[", { noremap = true })
+vim.keymap.set("o", "ia", "i<", { noremap = true })
+vim.keymap.set("o", "aa", "a<", { noremap = true })
 
 keymap("n", "<localleader><localleader>", function()
   local win = vim.v.count
@@ -20,6 +24,23 @@ keymap("n", "<localleader><localleader>", function()
 end, { desc = "switch to the previous buffer" })
 
 keymap("n", "<localleader>w", "<C-w>", { desc = "Send C-w buffer" })
+
+local function smart_win_selection()
+  local win_count = #vim.api.nvim_tabpage_list_wins(0)
+  if win_count > 2 and vim.v.count == 0 then
+    -- local win = Snacks.picker.util.pick_win({ main = picker.main })
+    local win_id = Snacks.picker.util.pick_win()
+    if win_id == nil then
+      return
+    end
+    vim.api.nvim_set_current_win(win_id)
+    return
+  end
+  vim.cmd(string.format("%dwincmd w", vim.v.count))
+end
+
+keymap("n", "<C-w>w", smart_win_selection, { desc = "Smart win selection" })
+keymap("n", "<C-w><C-w>", smart_win_selection, { desc = "Smart win selection" })
 
 -- command map
 keymap("c", "<C-j>", "<Down>", { desc = "Cmd hist next" })

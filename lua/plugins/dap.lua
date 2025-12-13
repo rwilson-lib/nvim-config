@@ -9,17 +9,26 @@ return {
     "igorlfs/nvim-dap-view",
     { "leoluz/nvim-dap-go", lazy = true, ft = { "go" } },
     { "mfussenegger/nvim-dap-python", lazy = true, ft = { "python" } },
+    "jbyuki/one-small-step-for-vimkind",
   },
 
   -- stylua: ignore
   keys = {
     { "<F5>", function() require("dap").continue() end, desc = "DAP: Continue/Start Debugging", },
-    { "<F9>", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint", },
     { "<Leader>dd", function() require("dap").run_last() end, desc = "DAP: Run Last Debug Session", },
     { "<Leader>dD", function() require("dap").continue() end, desc = "DAP: Continue/Start Debugging", },
-    { "<Leader>dbb", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint", },
-    { "<Leader>dbc", function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, desc = "DAP: Set Breakpoint with Condition", },
-    { "<Leader>dbl", function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, desc = "DAP: Set Logpoint", },
+    { "<F9>", function()
+      if vim.v.count > 0 then vim.api.nvim_win_set_cursor(0, {vim.v.count, 0}) end
+      require("dap").toggle_breakpoint() end , desc = "toggle breakpoint", },
+    { "<leader>db", function()
+      if vim.v.count > 0 then vim.api.nvim_win_set_cursor(0, {vim.v.count, 0}) end
+      require("dap").toggle_breakpoint() end , desc = "toggle breakpoint", },
+    { "<Leader>dBc", function()
+      if vim.v.count > 0 then vim.api.nvim_win_set_cursor(0, {vim.v.count, 0}) end
+      require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, desc = "DAP: Set Breakpoint with Condition", },
+    { "<Leader>dBl", function()
+      if vim.v.count > 0 then vim.api.nvim_win_set_cursor(0, {vim.v.count, 0}) end
+      require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, desc = "DAP: Set Logpoint", },
   },
 
   init = function()
@@ -34,8 +43,7 @@ return {
 
     require("dap-go").setup()
     require("dap-python").setup("uv")
-    ---@diagnostic disable-next-line: missing-parameter
-    require("nvim-dap-virtual-text").setup()
+    require("nvim-dap-virtual-text").setup({})
 
     vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "Error" })
     vim.fn.sign_define("DapStopped", {
@@ -50,6 +58,22 @@ return {
       linehl = "",
       numhl = "",
     })
+
+    dap.configurations.lua = {
+      {
+        type = "nlua",
+        request = "attach",
+        name = "Attach to running Neovim instance",
+      },
+    }
+
+    dap.adapters["nlua"] = function(callback, config)
+      callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
+    end
+
+    vim.keymap.set("n", "<leader>dl", function()
+      require("osv").launch({ port = 8086 })
+    end, { noremap = true }, { silent = true, desc = "DAP: Launch OSV Debugger" })
 
     -- https://tamerlan.dev/a-guide-to-debugging-applications-in-neovim/
     -- Adapter: let nvim-dap start the js-debug adapter itself
@@ -185,9 +209,9 @@ return {
         local action = map[3]
         local opts = map[4]
         if del then
-          vim.keymap.del(mode, key)
+          pcall(vim.keymap.del, mode, key)
         else
-          vim.keymap.set(mode, key, action, opts)
+          pcall(vim.keymap.set, mode, key, action, opts)
         end
       end
     end
@@ -197,7 +221,7 @@ return {
     vim.api.nvim_create_autocmd("User", {
       group = my_dap_events,
       pattern = "DapStart",
-      callback = function(args)
+      callback = function(_)
         dap_keymap(dap_keymaps)
       end,
     })
@@ -205,7 +229,7 @@ return {
     vim.api.nvim_create_autocmd("User", {
       group = my_dap_events,
       pattern = "DapStop",
-      callback = function(args)
+      callback = function(_)
         dap_keymap(dap_keymaps, true)
       end,
     })
